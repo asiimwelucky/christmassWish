@@ -13,7 +13,7 @@ import ConfettiEffect from '@/components/ui/ConfettiEffect';
 import { audioChimes } from '@/components/ui/AudioChimes';
 import { trackEvent } from '@/lib/analytics';
 import type { Wish } from '@/types';
-import { Sparkles, Share2, Play, ArrowLeft, Heart } from 'lucide-react';
+import { Sparkles, Share2, ArrowLeft, Heart } from 'lucide-react';
 
 interface WishViewClientProps {
   wish: Wish;
@@ -82,23 +82,15 @@ export default function WishViewClient({ wish }: WishViewClientProps) {
           />
         </div>
 
-        {/* Share & Download Actions */}
-        <div className="flex flex-wrap items-center justify-center gap-3 w-full max-w-md mb-8">
+        {/* Share & Download Action */}
+        <div className="flex justify-center items-center w-full max-w-sm mb-8">
           <button
             onClick={() => setIsShareModalOpen(true)}
-            className="btn-gold flex-1 min-w-[160px] flex items-center justify-center gap-2 py-3 px-5 text-xs shadow-lg"
+            className="btn-gold w-full flex items-center justify-center gap-2 py-3 px-6 text-xs shadow-lg"
           >
             <Share2 className="w-4 h-4" />
             <span>Share & Download Card</span>
           </button>
-
-          <Link
-            href="/skit"
-            className="btn-outline flex-1 min-w-[160px] flex items-center justify-center gap-2 py-3 px-5 text-xs bg-white/5"
-          >
-            <Play className="w-4 h-4 fill-current" />
-            <span>Watch Christmas Skit</span>
-          </Link>
         </div>
 
         {/* Viral Forward Loop Card */}

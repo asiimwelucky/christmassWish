@@ -13,8 +13,6 @@ import {
   Send,
   Share2,
   Download,
-  Play,
-  CheckCircle,
   Copy,
   Users,
   ShieldCheck,
@@ -233,7 +231,7 @@ export default function AdminPage() {
             </div>
 
             {/* Metrics Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               <div className="festive-card p-5 border border-[#D4AF37]/30">
                 <div className="flex items-center justify-between text-white/60 mb-2">
                   <span className="text-xs font-medium uppercase tracking-wider">Total Wishes</span>
@@ -287,28 +285,6 @@ export default function AdminPage() {
                   {stats?.summary?.total_link_copies ?? 0}
                 </div>
                 <p className="text-[11px] text-white/50 mt-1">Direct links copied</p>
-              </div>
-
-              <div className="festive-card p-5 border border-white/10">
-                <div className="flex items-center justify-between text-white/60 mb-2">
-                  <span className="text-xs font-medium uppercase tracking-wider">Skit Starts</span>
-                  <Play className="w-4 h-4 text-amber-400" />
-                </div>
-                <div className="text-2xl font-bold font-serif text-white">
-                  {stats?.summary?.total_skit_starts ?? 0}
-                </div>
-                <p className="text-[11px] text-white/50 mt-1">Story initiated</p>
-              </div>
-
-              <div className="festive-card p-5 border border-white/10">
-                <div className="flex items-center justify-between text-white/60 mb-2">
-                  <span className="text-xs font-medium uppercase tracking-wider">Skit Finishes</span>
-                  <CheckCircle className="w-4 h-4 text-[#27AE60]" />
-                </div>
-                <div className="text-2xl font-bold font-serif text-white">
-                  {stats?.summary?.total_skit_completions ?? 0}
-                </div>
-                <p className="text-[11px] text-white/50 mt-1">Reached finale scene</p>
               </div>
 
               <div className="festive-card p-5 border border-white/10">

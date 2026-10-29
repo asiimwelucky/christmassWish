@@ -13,11 +13,6 @@ A festive, viral Christmas greeting platform and interactive multimedia holiday 
   - Create customized festive greeting cards for friends, family, students, teachers, or colleagues.
   - Optional personalized message with character counter and holiday prompt suggestions.
   - Real-time live card preview with festive ornaments, gold shimmer typography, and school insignia.
-
-- **🌟 Interactive Christmas Skit (`/skit`)**
-  - "The Light of Kagadi" — an interactive multi-scene holiday story journey.
-  - Web Audio API synthesized holiday bells, chords, and chimes (zero external MP3 dependencies).
-  - Interactive Tree of Blessings: tap ornaments to uncover words of wisdom and encouragement.
   - Festive animations: falling snowflakes, twinkling starfield, glowing Christmas lights, and celebration confetti.
 
 - **📲 Viral Share Engine (`/wish/[token]`)**
@@ -107,7 +102,6 @@ Visit [http://localhost:3000](http://localhost:3000) to view the application!
 | `/` | Landing page with public counter, Christmas tree, and campaign overview |
 | `/create` | Interactive Wish Creator with live card preview |
 | `/wish/[token]` | Personalized Greeting Card view with WhatsApp & download actions |
-| `/skit` | Interactive Christmas Skit and holiday story experience |
 | `/admin` | Protected administrative telemetry and analytics console |
 | `/api/campaign` | Public endpoint for campaign status & live counter |
 | `/api/wish` | API endpoint for creating and retrieving personalized wishes |

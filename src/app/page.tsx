@@ -9,7 +9,7 @@ import SnowEffect from '@/components/christmas/SnowEffect';
 import StarField from '@/components/christmas/StarField';
 import Footer from '@/components/christmas/Footer';
 import { trackEvent } from '@/lib/analytics';
-import { Sparkles, Play, Share2, Heart, Award, ShieldCheck } from 'lucide-react';
+import { Sparkles, Share2, Heart, Award, ShieldCheck } from 'lucide-react';
 
 interface CampaignData {
   show_public_counter: boolean;
@@ -67,7 +67,7 @@ export default function HomePage() {
         </h1>
 
         <p className="text-base sm:text-xl text-[#FFF8F0]/85 max-w-2xl mx-auto mb-8 font-light leading-relaxed">
-          Celebrate hope, connection, and learning this festive season. Create a customized greeting for someone you cherish, or explore our interactive holiday story!
+          Celebrate hope, connection, and learning this festive season. Create a customized greeting for someone you cherish and spread the Christmas joy!
         </p>
 
         {/* Interactive Christmas Tree Display */}
@@ -75,22 +75,14 @@ export default function HomePage() {
           <ChristmasTree size="md" />
         </div>
 
-        {/* Call to Actions */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full max-w-md mb-12">
+        {/* Call to Action */}
+        <div className="flex justify-center items-center w-full max-w-md mb-12">
           <Link
             href="/create"
-            className="btn-primary w-full sm:w-auto flex items-center justify-center gap-2 py-4 px-8 text-base shadow-xl"
+            className="btn-primary w-full sm:w-auto flex items-center justify-center gap-2 py-4 px-10 text-base shadow-xl"
           >
             <Sparkles className="w-5 h-5" />
-            <span>Create Christmas Wish</span>
-          </Link>
-
-          <Link
-            href="/skit"
-            className="btn-outline w-full sm:w-auto flex items-center justify-center gap-2 py-4 px-8 text-base bg-white/5 border border-[#D4AF37]/60"
-          >
-            <Play className="w-4 h-4 fill-current" />
-            <span>Watch Christmas Skit</span>
+            <span>Create Your Christmas Wish</span>
           </Link>
         </div>
 
