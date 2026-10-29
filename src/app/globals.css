@@ -1,26 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Dancing+Script:wght@600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-inter: 'Inter', sans-serif;
+  --font-playfair: 'Playfair Display', serif;
+  --font-dancing: 'Dancing Script', cursive;
+
+  /* Christmas palette */
+  --c-red: #C0392B;
+  --c-red-dark: #96281B;
+  --c-red-light: #E74C3C;
+  --c-green: #1A6B3A;
+  --c-green-dark: #0D4A28;
+  --c-green-light: #27AE60;
+  --c-gold: #D4AF37;
+  --c-gold-dark: #B8960C;
+  --c-gold-light: #F5D76E;
+  --c-cream: #FFF8F0;
+  --c-navy: #0A1628;
+  --c-navy-light: #142240;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter);
+  background-color: var(--c-navy);
+  color: var(--c-cream);
+  overflow-x: hidden;
+}
+
+/* ── Reduced motion ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Snowflakes ──────────────────────────────────────────── */
+.snowflake {
+  position: fixed;
+  top: -20px;
+  z-index: 999;
+  pointer-events: none;
+  color: #fff;
+  font-size: 1rem;
+  user-select: none;
+  animation: snowfall linear infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes snowfall {
+  0%   { transform: translateY(-20px) translateX(0px) rotate(0deg); opacity: 0; }
+  5%   { opacity: 0.8; }
+  95%  { opacity: 0.8; }
+  100% { transform: translateY(110vh) translateX(40px) rotate(360deg); opacity: 0; }
+}
+
+/* ── Twinkling stars ─────────────────────────────────────── */
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  animation: twinkle ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.2; transform: scale(0.7); }
+}
+
+/* ── Gold shimmer text ───────────────────────────────────── */
+.gold-shimmer {
+  background: linear-gradient(90deg, #D4AF37 0%, #F5D76E 40%, #D4AF37 60%, #F5D76E 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ── Glowing border ──────────────────────────────────────── */
+.glow-border {
+  box-shadow:
+    0 0 5px rgba(212,175,55,0.3),
+    0 0 20px rgba(212,175,55,0.15),
+    0 0 40px rgba(212,175,55,0.05);
+}
+
+/* ── Festive card ────────────────────────────────────────── */
+.festive-card {
+  background: linear-gradient(145deg, rgba(20,34,64,0.95) 0%, rgba(13,74,40,0.4) 100%);
+  border: 1px solid rgba(212,175,55,0.25);
+  border-radius: 1.25rem;
+  backdrop-filter: blur(12px);
+}
+
+/* ── Button styles ───────────────────────────────────────── */
+.btn-primary {
+  background: linear-gradient(135deg, #C0392B 0%, #E74C3C 100%);
+  color: #fff;
+  font-weight: 600;
+  padding: 0.875rem 2rem;
+  border-radius: 3rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(192,57,43,0.4);
+  letter-spacing: 0.025em;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(192,57,43,0.55);
+}
+
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-gold {
+  background: linear-gradient(135deg, #B8960C 0%, #D4AF37 100%);
+  color: #0A1628;
+  font-weight: 700;
+  padding: 0.875rem 2rem;
+  border-radius: 3rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(212,175,55,0.4);
+  letter-spacing: 0.025em;
+}
+
+.btn-gold:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(212,175,55,0.55);
+}
+
+.btn-gold:active { transform: translateY(0); }
+.btn-gold:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-outline {
+  background: transparent;
+  color: var(--c-gold);
+  font-weight: 600;
+  padding: 0.75rem 1.75rem;
+  border-radius: 3rem;
+  border: 1.5px solid rgba(212,175,55,0.6);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-outline:hover:not(:disabled) {
+  background: rgba(212,175,55,0.1);
+  border-color: var(--c-gold);
+  transform: translateY(-1px);
+}
+
+.btn-outline:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ── Input styles ────────────────────────────────────────── */
+.festive-input {
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid rgba(212,175,55,0.3);
+  border-radius: 0.75rem;
+  padding: 0.875rem 1.25rem;
+  color: #fff;
+  font-size: 1rem;
+  font-family: var(--font-inter);
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.festive-input:focus {
+  outline: none;
+  border-color: var(--c-gold);
+  box-shadow: 0 0 0 3px rgba(212,175,55,0.15);
+}
+
+.festive-input::placeholder { color: rgba(255,248,240,0.4); }
+
+/* ── Pulse animation ─────────────────────────────────────── */
+.pulse-glow {
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 10px rgba(212,175,55,0.4); }
+  50%       { box-shadow: 0 0 35px rgba(212,175,55,0.85); }
+}
+
+/* ── Float ───────────────────────────────────────────────── */
+.float {
+  animation: float 3.5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+/* ── Skit scene transitions ──────────────────────────────── */
+.scene-enter {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.scene-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* ── Christmas lights ────────────────────────────────────── */
+.lights-row {
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  background: transparent;
+}
+
+.light-bulb {
+  width: 14px;
+  height: 20px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  position: relative;
+  animation: light-flicker ease-in-out infinite;
+}
+
+@keyframes light-flicker {
+  0%, 100% { filter: brightness(1) saturate(1.2); }
+  50%       { filter: brightness(1.5) saturate(1.5); }
+}
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: rgba(10,22,40,0.5); }
+::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.4); border-radius: 3px; }
+
+/* ── Focus visible ───────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--c-gold);
+  outline-offset: 2px;
 }
