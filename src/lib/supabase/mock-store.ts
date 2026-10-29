@@ -91,7 +91,7 @@ export const mockStore = globalThis.__paradigm_mock_store;
 export function createMockServiceClient() {
   return {
     from(table: string) {
-      let filters: Array<(row: any) => boolean> = [];
+      const filters: Array<(row: any) => boolean> = [];
       let isHead = false;
       let isExactCount = false;
       let orderField: string | null = null;
@@ -121,7 +121,9 @@ export function createMockServiceClient() {
           if (res.error) return { data: null, error: res.error };
           return { data: res.data?.[0] ?? null, error: null };
         },
-        async insert(payload: any) {
+        insert(payload: any) {
+          let insertedData: any = null;
+
           if (table === 'wishes') {
             const token = payload.public_token || 'xmas_' + Math.random().toString(36).substring(2, 12);
             const newWish: StoredWish = {
@@ -136,16 +138,8 @@ export function createMockServiceClient() {
               expires_at: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(),
             };
             mockStore.wishes.set(token, newWish);
-            return {
-              select: () => ({
-                single: async () => ({ data: { public_token: token }, error: null }),
-              }),
-              data: newWish,
-              error: null,
-            };
-          }
-
-          if (table === 'analytics_events') {
+            insertedData = newWish;
+          } else if (table === 'analytics_events') {
             const newEvent: StoredEvent = {
               id: randomUUID(),
               event_type: payload.event_type,
@@ -155,10 +149,35 @@ export function createMockServiceClient() {
               created_at: new Date().toISOString(),
             };
             mockStore.events.push(newEvent);
-            return { data: newEvent, error: null };
+            insertedData = newEvent;
+          } else {
+            insertedData = payload;
           }
 
-          return { data: payload, error: null };
+          const insertChain = {
+            select(fields?: string) {
+              return {
+                single: async () => ({
+                  data: insertedData ? (fields === 'public_token' ? { public_token: insertedData.public_token } : insertedData) : null,
+                  error: null,
+                }),
+                then(resolve?: (val: any) => any) {
+                  const res = { data: insertedData ? [insertedData] : [], error: null };
+                  return resolve ? resolve(res) : Promise.resolve(res);
+                },
+              };
+            },
+            single: async () => ({
+              data: insertedData,
+              error: null,
+            }),
+            then(resolve?: (val: any) => any) {
+              const res = { data: insertedData ? [insertedData] : [], error: null };
+              return resolve ? resolve(res) : Promise.resolve(res);
+            },
+          };
+
+          return insertChain;
         },
         then(resolve?: (val: any) => any) {
           let rows: any[] = [];
@@ -236,4 +255,3 @@ export function createMockServiceClient() {
     },
   };
 }
-
