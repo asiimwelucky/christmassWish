@@ -4,7 +4,10 @@
  * Build the WhatsApp share URL for a personalized wish.
  */
 export function buildWhatsAppShareUrl(token: string): string {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
+  const siteUrl =
+    typeof window !== 'undefined'
+      ? window.location.origin
+      : process.env.NEXT_PUBLIC_SITE_URL || '';
   const wishUrl = `${siteUrl}/wish/${token}`;
   return `https://wa.me/?text=${encodeURIComponent(wishUrl)}`;
 }

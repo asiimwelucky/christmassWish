@@ -36,8 +36,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const wish = await getWish(token);
 
   const siteUrl =
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
     process.env.NEXT_PUBLIC_SITE_URL ||
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
+    'http://localhost:3000';
   const name = wish?.display_name || 'Someone special';
   const personalMessage = wish?.personal_message?.trim();
 
