@@ -132,7 +132,7 @@ export const GreetingCard = forwardRef<HTMLDivElement, GreetingCardProps>(
               <p className="text-[11px] text-[#D4AF37] font-semibold uppercase tracking-wider mb-1">
                 Personal Note
               </p>
-              <p className="text-sm italic text-[rgba(255,255,255,0.95)] leading-snug break-words">
+              <p className="text-base italic text-[rgba(255,255,255,0.95)] leading-relaxed break-words">
                 &ldquo;{personalMessage}&rdquo;
               </p>
             </div>

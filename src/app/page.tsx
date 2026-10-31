@@ -11,6 +11,7 @@ import Footer from '@/components/christmas/Footer';
 import FallingPetals from '@/components/christmas/botanical/FallingPetals';
 import FloatingChristmasFlowers from '@/components/christmas/botanical/FloatingChristmasFlowers';
 import ChristmasFlower from '@/components/christmas/botanical/ChristmasFlower';
+import DesignerCredit from '@/components/ui/DesignerCredit';
 import { trackEvent } from '@/lib/analytics';
 import { Sparkles } from 'lucide-react';
 
@@ -99,6 +100,7 @@ export default function HomePage() {
             <Sparkles className="w-5 h-5" />
             <span>Create Christmas Wish</span>
           </Link>
+          <DesignerCredit className="mt-3" />
         </div>
       </main>
 

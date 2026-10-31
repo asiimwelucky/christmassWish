@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, Suspense } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import BrandHeader from '@/components/christmas/BrandHeader';
 import ChristmasLights from '@/components/christmas/ChristmasLights';
@@ -26,7 +26,6 @@ const PRESET_MESSAGES = [
 
 function CreateWishForm() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const parentToken = searchParams.get('from') || null;
   const fromName = searchParams.get('by') || null;
 
@@ -79,8 +78,8 @@ function CreateWishForm() {
       setShowConfetti(true);
       audioChimes.playCelebrationChord();
       setIsShareModalOpen(true);
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong. Please try again.');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
       trackEvent('wish_creation_failed');
     } finally {
       setLoading(false);
@@ -194,12 +193,12 @@ function CreateWishForm() {
                 </div>
                 <textarea
                   id="msg-input"
-                  rows={2}
+                  rows={5}
                   maxLength={280}
                   value={personalMessage}
                   onChange={(e) => setPersonalMessage(e.target.value)}
                   placeholder="Write a warm note or click a quick suggestion below..."
-                  className="festive-input py-2 text-sm resize-none"
+                  className="festive-input min-h-36 resize-y py-3 text-base leading-relaxed"
                 />
 
                 {/* Preset Suggestions */}

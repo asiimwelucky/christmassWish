@@ -113,7 +113,7 @@ export default function WishViewClient({ wish }: WishViewClientProps) {
             <div className="my-4 flex justify-center" aria-hidden="true">
               <BotanicalDivider size={24} ruleWidth={50} />
             </div>
-            <p className="mx-auto max-w-[19rem] text-[clamp(0.9rem,2.5svh,1.15rem)] leading-relaxed break-words text-[rgba(255,248,240,0.9)]">
+            <p className="mx-auto max-w-[19rem] text-[clamp(1.05rem,3svh,1.35rem)] leading-relaxed break-words text-[rgba(255,248,240,0.9)]">
               {wish.personal_message?.trim() ||
                 'Wishing you peace, joy, and love this Christmas and throughout the New Year.'}
             </p>

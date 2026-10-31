@@ -39,11 +39,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     process.env.NEXT_PUBLIC_SITE_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
   const name = wish?.display_name || 'Someone special';
+  const personalMessage = wish?.personal_message?.trim();
 
   // Receiver-facing preview: when this link is reshared, the card and the
   // wording carry ASMART TEC rather than the creator's institution.
   const title = `🎄 Merry Christmas, ${name}! | ASMART TEC`;
-  const description = `${name} passed a Christmas wish on to you — open your greeting, add your own note and keep the chain going. We wish you a Merry Christmas & Happy New Year!`;
+  const description = personalMessage
+    ? `${name} sent you a Christmas wish: “${personalMessage.slice(0, 140)}”`
+    : `${name} sent you a Christmas wish from ASMART TEC. Open it, add your own wish and pass the joy on!`;
 
   return {
     title,
@@ -56,8 +59,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       images: [
         {
           url: '/christmas-hero-bg.jpg',
-          width: 1200,
-          height: 630,
+          width: 1376,
+          height: 768,
           alt: `Christmas wish for ${name}`,
         },
       ],
@@ -66,7 +69,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       card: 'summary_large_image',
       title,
       description,
-      images: ['/christmas-hero-bg.jpg'],
+      images: [
+        {
+          url: '/christmas-hero-bg.jpg',
+          width: 1376,
+          height: 768,
+          alt: `Christmas wish for ${name}`,
+        },
+      ],
     },
   };
 }

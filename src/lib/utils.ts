@@ -3,13 +3,10 @@
 /**
  * Build the WhatsApp share URL for a personalized wish.
  */
-export function buildWhatsAppShareUrl(token: string, senderName: string): string {
+export function buildWhatsAppShareUrl(token: string): string {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
   const wishUrl = `${siteUrl}/wish/${token}`;
-  const message = encodeURIComponent(
-    `🎄✨ Merry Christmas! ${senderName || 'Someone'} has a personal Christmas wish for you.\n\nOpen your greeting here:\n${wishUrl}\n\nSign it with your own name and pass it on — the chain never has to end! 🎁`
-  );
-  return `https://wa.me/?text=${message}`;
+  return `https://wa.me/?text=${encodeURIComponent(wishUrl)}`;
 }
 
 /**

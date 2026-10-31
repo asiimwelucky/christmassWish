@@ -29,7 +29,7 @@ export default function ShareModal({
   if (!isOpen) return null;
 
   const wishUrl = buildWishUrl(token);
-  const waUrl = buildWhatsAppShareUrl(token, senderName);
+  const waUrl = buildWhatsAppShareUrl(token);
   const brandLabel = 'ASMART.TEC';
 
   const handleCopy = async () => {
