@@ -2,8 +2,11 @@
 // Web Audio API synthesized festive chimes and bells
 // No external MP3 files needed; instant load and reliable across browsers.
 
-/** Title shown wherever the carol is offered for playback. */
-export const DEFAULT_SONG_TITLE = 'We Wish You a Merry Christmas & Happy New Year';
+declare global {
+  interface Window {
+    webkitAudioContext?: typeof AudioContext;
+  }
+}
 
 class ChimeAudioService {
   private ctx: AudioContext | null = null;
@@ -30,13 +33,10 @@ class ChimeAudioService {
   private getContext(): AudioContext | null {
     if (typeof window === 'undefined') return null;
     if (!this.ctx) {
-      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
       if (AudioCtx) {
         this.ctx = new AudioCtx();
       }
-    }
-    if (this.ctx && this.ctx.state === 'suspended') {
-      this.ctx.resume();
     }
     return this.ctx;
   }
@@ -55,7 +55,7 @@ class ChimeAudioService {
   public playBell(freq: number, duration: number = 1.2, gainValue: number = 0.25) {
     if (this.isMuted) return;
     const ctx = this.getContext();
-    if (!ctx) return;
+    if (!ctx || ctx.state !== 'running') return;
 
     try {
       const now = ctx.currentTime;
@@ -136,14 +136,13 @@ class ChimeAudioService {
   /** Schedule one pass; every timer is tracked so stopTheme() can cancel it. */
   private scheduleThemePass(): void {
     ChimeAudioService.THEME.forEach(([freq, offset, dur]) => {
-      this.themeTimers.push(window.setTimeout(() => this.playBell(freq, dur, 0.16), offset));
+      this.themeTimers.push(window.setTimeout(() => this.playBell(freq, dur, 0.22), offset));
     });
   }
 
   /**
    * Loop the carol. Browsers block the AudioContext until a gesture, so this is
-   * only ever called from a click handler. Muting silences it without stopping
-   * the loop, so unmuting picks the same phrase back up.
+   * only ever called after audio has been unlocked by a user gesture.
    */
   public startTheme(gapMs = 1800): void {
     if (typeof window === 'undefined' || this.themePlaying) return;
@@ -197,4 +196,3 @@ class ChimeAudioService {
 }
 
 export const audioChimes = new ChimeAudioService();
-

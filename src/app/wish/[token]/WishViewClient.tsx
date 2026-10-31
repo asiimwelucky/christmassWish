@@ -5,10 +5,9 @@ import Link from 'next/link';
 import SnowEffect from '@/components/christmas/SnowEffect';
 import AsmartLogo from '@/components/christmas/AsmartLogo';
 import BotanicalDivider from '@/components/christmas/botanical/BotanicalDivider';
-import ChristmasFloralCorner from '@/components/christmas/botanical/ChristmasFloralCorner';
 import DesignerCredit from '@/components/ui/DesignerCredit';
-import NowPlaying from '@/components/ui/NowPlaying';
 import ConfettiEffect from '@/components/ui/ConfettiEffect';
+import FireworksEffect from '@/components/ui/FireworksEffect';
 import { audioChimes } from '@/components/ui/AudioChimes';
 import { trackEvent } from '@/lib/analytics';
 import type { Wish } from '@/types';
@@ -36,8 +35,7 @@ export default function WishViewClient({ wish }: WishViewClientProps) {
     <div className="relative flex min-h-[100svh] flex-col overflow-x-hidden bg-[#0A1628] text-white">
       <SnowEffect />
       <ConfettiEffect active={showConfetti} onComplete={() => setShowConfetti(false)} />
-
-      <NowPlaying />
+      <FireworksEffect active={showConfetti} />
 
       <main className="relative z-10 flex min-h-0 flex-1 items-center justify-center px-3 py-2">
         {/*
@@ -51,54 +49,10 @@ export default function WishViewClient({ wish }: WishViewClientProps) {
           style={{ minHeight: 'min(calc((100vw - 1.75rem) * 16 / 9), 100svh)' }}
         >
           <div className="christmas-card-frame" aria-hidden="true" />
-          {/*
-            Botanical frame. Two hero sprays in the top-left/bottom-right
-            corners, lighter cream pairs opposite. All orientation happens
-            inside the SVGs (never a CSS transform) because this exact node is
-            rasterised by html2canvas for the WhatsApp download.
-          */}
-          <div className="absolute inset-0 z-0" aria-hidden="true">
-            <ChristmasFloralCorner
-              corner="top-left"
-              sizePct={20}
-              density="full"
-              style={{ top: 12, left: 12 }}
-              seed={5}
-            />
-            <ChristmasFloralCorner
-              corner="bottom-right"
-              sizePct={20}
-              density="full"
-              style={{ bottom: 12, right: 12 }}
-              seed={13}
-            />
-            <ChristmasFloralCorner
-              corner="top-right"
-              sizePct={12}
-              density="light"
-              variant="cream"
-              sparkles={false}
-              style={{ top: 18, right: 18 }}
-              seed={21}
-            />
-            <ChristmasFloralCorner
-              corner="bottom-left"
-              sizePct={12}
-              density="light"
-              variant="cream"
-              sparkles={false}
-              style={{ bottom: 18, left: 18 }}
-              seed={29}
-            />
-          </div>
 
-          {/* Receiver-side branding, in flow above the message so it can never
-              be clipped and is part of the downloaded card. */}
-          <div className="relative z-10 flex shrink-0 flex-col items-center gap-1.5 pb-6">
+          {/* Receiver-side logo stays in flow above the message and in the downloaded card. */}
+          <div className="relative z-10 flex shrink-0 flex-col items-center pb-6">
             <AsmartLogo size={44} />
-            <span className="text-[9px] uppercase tracking-[0.28em] text-[rgba(255,255,255,0.45)]">
-              ASMART TEC
-            </span>
           </div>
 
           <div className="relative z-10">

@@ -11,9 +11,8 @@ import Footer from '@/components/christmas/Footer';
 import FallingPetals from '@/components/christmas/botanical/FallingPetals';
 import FloatingChristmasFlowers from '@/components/christmas/botanical/FloatingChristmasFlowers';
 import ChristmasFlower from '@/components/christmas/botanical/ChristmasFlower';
-import DesignerCredit from '@/components/ui/DesignerCredit';
 import { trackEvent } from '@/lib/analytics';
-import { Sparkles } from 'lucide-react';
+import { BarChart3, LockKeyhole, Sparkles } from 'lucide-react';
 
 interface CampaignData {
   show_public_counter: boolean;
@@ -100,7 +99,14 @@ export default function HomePage() {
             <Sparkles className="w-5 h-5" />
             <span>Create Christmas Wish</span>
           </Link>
-          <DesignerCredit className="mt-3" />
+          <Link
+            href="/admin"
+            className="mx-auto mt-3 inline-flex items-center gap-1.5 text-[11px] text-white/50 transition-colors hover:text-[#F5D76E]"
+          >
+            <BarChart3 className="h-3.5 w-3.5" />
+            <span>Campaign usage dashboard</span>
+            <LockKeyhole className="h-3 w-3" />
+          </Link>
         </div>
       </main>
 

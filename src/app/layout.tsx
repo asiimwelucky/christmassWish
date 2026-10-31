@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter, Playfair_Display, Dancing_Script } from 'next/font/google';
+import NowPlaying from '@/components/ui/NowPlaying';
 import './globals.css';
 
 const inter = Inter({
@@ -80,6 +81,7 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${playfair.variable} ${dancing.variable}`}>
       <body className="antialiased min-h-screen bg-[#0A1628]">
         {children}
+        <NowPlaying />
       </body>
     </html>
   );

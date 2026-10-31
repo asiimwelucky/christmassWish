@@ -4,7 +4,7 @@ import React, { forwardRef } from 'react';
 import type { RecipientType } from '@/types';
 import AsmartLogo from '@/components/christmas/AsmartLogo';
 import BotanicalDivider from '@/components/christmas/botanical/BotanicalDivider';
-import ChristmasFloralCorner from '@/components/christmas/botanical/ChristmasFloralCorner';
+import DesignerCredit from '@/components/ui/DesignerCredit';
 
 interface GreetingCardProps {
   displayName: string;
@@ -34,47 +34,6 @@ export const GreetingCard = forwardRef<HTMLDivElement, GreetingCardProps>(
           boxShadow: '0 0 35px rgba(212, 175, 55, 0.2), inset 0 0 40px rgba(0,0,0,0.4)',
         }}
       >
-        {/*
-          Floral frame. Kept in its own stacking layer below the text: the two
-          hero sprays hug the top-left/bottom-right corners and taper before
-          they reach the centred copy, so the name and message stay the focus.
-        */}
-        <div className="absolute inset-0" style={{ zIndex: 0 }} aria-hidden="true">
-          <ChristmasFloralCorner
-            corner="top-left"
-            sizePct={25}
-            density="full"
-            style={{ top: -7, left: -7 }}
-            seed={3}
-          />
-          <ChristmasFloralCorner
-            corner="bottom-right"
-            sizePct={25}
-            density="full"
-            variant="red"
-            style={{ bottom: -7, right: -7 }}
-            seed={11}
-          />
-          <ChristmasFloralCorner
-            corner="top-right"
-            sizePct={15}
-            density="light"
-            variant="cream"
-            sparkles={false}
-            style={{ top: 7, right: 7 }}
-            seed={19}
-          />
-          <ChristmasFloralCorner
-            corner="bottom-left"
-            sizePct={15}
-            density="light"
-            variant="cream"
-            sparkles={false}
-            style={{ bottom: 7, left: 7 }}
-            seed={27}
-          />
-        </div>
-
         <div className="relative" style={{ zIndex: 1 }}>
           {/* Brand Badge */}
           <div className="flex items-center justify-center gap-2 mb-4">
@@ -144,6 +103,7 @@ export const GreetingCard = forwardRef<HTMLDivElement, GreetingCardProps>(
               ASMART.TEC
             </p>
           </div>
+          <DesignerCredit className="mt-4" />
         </div>
       </div>
     );

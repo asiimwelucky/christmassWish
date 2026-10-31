@@ -13,6 +13,7 @@ import BotanicalLoadingScreen from '@/components/christmas/botanical/BotanicalLo
 import ChristmasFlower from '@/components/christmas/botanical/ChristmasFlower';
 import ShareModal from '@/components/ui/ShareModal';
 import ConfettiEffect from '@/components/ui/ConfettiEffect';
+import FireworksEffect from '@/components/ui/FireworksEffect';
 import { audioChimes } from '@/components/ui/AudioChimes';
 import { trackEvent } from '@/lib/analytics';
 import { Sparkles, ArrowLeft, Send } from 'lucide-react';
@@ -91,6 +92,7 @@ function CreateWishForm() {
       <StarField />
       <SnowEffect />
       <ConfettiEffect active={showConfetti} onComplete={() => setShowConfetti(false)} />
+      <FireworksEffect active={showConfetti} />
 
       {/* Share Modal on Success */}
       {createdToken && (

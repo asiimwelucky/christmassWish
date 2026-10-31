@@ -97,6 +97,13 @@ body {
   .floral-petal {
     display: none;
   }
+
+  .loading-glow,
+  .loading-logo,
+  .loading-progress span,
+  .loading-stars span {
+    animation: none !important;
+  }
 }
 
 /* ── Snowflakes ──────────────────────────────────────────── */
@@ -286,6 +293,71 @@ body {
 .christmas-title {
   text-shadow: 0 0 24px rgba(245, 215, 110, 0.25);
   animation: title-glow 4s ease-in-out infinite;
+}
+
+.loading-glow {
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(212, 175, 55, 0.15), transparent 55%),
+    radial-gradient(ellipse at 15% 90%, rgba(192, 57, 43, 0.13), transparent 40%);
+  animation: loading-glow 5s ease-in-out infinite alternate;
+}
+
+.loading-logo {
+  animation: loading-float 2.8s ease-in-out infinite;
+}
+
+.loading-progress {
+  height: 3px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(245, 215, 110, 0.16);
+}
+
+.loading-progress span {
+  display: block;
+  width: 40%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #d4af37, #fff1ae, #d4af37);
+  animation: loading-progress 1.8s ease-in-out infinite;
+}
+
+.loading-stars {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.loading-stars span {
+  position: absolute;
+  color: #f5d76e;
+  opacity: 0;
+  animation: loading-twinkle 2.4s ease-in-out infinite;
+}
+
+.loading-stars span:nth-child(1) { top: 22%; left: 18%; font-size: 1rem; }
+.loading-stars span:nth-child(2) { top: 38%; right: 15%; font-size: 1.4rem; animation-delay: 0.8s; }
+.loading-stars span:nth-child(3) { bottom: 20%; left: 24%; font-size: 0.8rem; animation-delay: 1.5s; }
+
+@keyframes loading-glow {
+  from { opacity: 0.6; transform: scale(1); }
+  to { opacity: 1; transform: scale(1.08); }
+}
+
+@keyframes loading-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes loading-progress {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(260%); }
+}
+
+@keyframes loading-twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.7) rotate(0deg); }
+  50% { opacity: 0.9; transform: scale(1.1) rotate(35deg); }
 }
 
 @keyframes title-glow {
