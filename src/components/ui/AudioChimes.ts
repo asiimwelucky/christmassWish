@@ -10,6 +10,7 @@ declare global {
 
 class ChimeAudioService {
   private ctx: AudioContext | null = null;
+  private output: GainNode | null = null;
   private isMuted: boolean = false;
   private themeTimers: number[] = [];
   private themeTimer: number | null = null;
@@ -36,6 +37,17 @@ class ChimeAudioService {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
       if (AudioCtx) {
         this.ctx = new AudioCtx();
+        this.output = this.ctx.createGain();
+        this.output.gain.value = 1.5;
+
+        const compressor = this.ctx.createDynamicsCompressor();
+        compressor.threshold.value = -12;
+        compressor.knee.value = 8;
+        compressor.ratio.value = 8;
+        compressor.attack.value = 0.003;
+        compressor.release.value = 0.25;
+        this.output.connect(compressor);
+        compressor.connect(this.ctx.destination);
       }
     }
     return this.ctx;
@@ -74,13 +86,14 @@ class ChimeAudioService {
       gain.gain.setValueAtTime(gainValue, now);
       gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
 
-      gain2.gain.setValueAtTime(gainValue * 0.3, now);
+      gain2.gain.setValueAtTime(gainValue * 0.4, now);
       gain2.gain.exponentialRampToValueAtTime(0.0001, now + duration * 0.5);
 
       osc.connect(gain);
       osc2.connect(gain2);
-      gain.connect(ctx.destination);
-      gain2.connect(ctx.destination);
+      if (!this.output) return;
+      gain.connect(this.output);
+      gain2.connect(this.output);
 
       osc.start(now);
       osc2.start(now);
@@ -136,7 +149,7 @@ class ChimeAudioService {
   /** Schedule one pass; every timer is tracked so stopTheme() can cancel it. */
   private scheduleThemePass(): void {
     ChimeAudioService.THEME.forEach(([freq, offset, dur]) => {
-      this.themeTimers.push(window.setTimeout(() => this.playBell(freq, dur, 0.22), offset));
+      this.themeTimers.push(window.setTimeout(() => this.playBell(freq, dur, 0.32), offset));
     });
   }
 
@@ -172,7 +185,8 @@ class ChimeAudioService {
   /**
    * Play a single magical twinkle chime
    */
-  public playTwinkle() {    if (this.isMuted) return;
+  public playTwinkle() {
+    if (this.isMuted) return;
     const notes = [523.25, 659.25, 783.99, 1046.5];
     notes.forEach((freq, idx) => {
       setTimeout(() => {

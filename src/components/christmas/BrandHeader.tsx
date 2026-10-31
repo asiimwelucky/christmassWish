@@ -6,6 +6,7 @@ import AsmartLogo from '@/components/christmas/AsmartLogo';
 
 interface BrandHeaderProps {
   variant?: 'full' | 'compact';
+  showCompactName?: boolean;
 }
 
 /** Small sprigs flanking the wordmark — botanical framing without crowding the logo. */
@@ -17,7 +18,10 @@ function BrandSprig({ flip = false, size = 34 }: { flip?: boolean; size?: number
   );
 }
 
-export default function BrandHeader({ variant = 'full' }: BrandHeaderProps) {
+export default function BrandHeader({
+  variant = 'full',
+  showCompactName = true,
+}: BrandHeaderProps) {
   return (
     <header className="text-center" role="banner">
       {variant === 'full' ? (
@@ -36,9 +40,11 @@ export default function BrandHeader({ variant = 'full' }: BrandHeaderProps) {
         <div className="flex items-center justify-center gap-2">
           <BrandSprig flip size={28} />
           <AsmartLogo size={34} />
-          <span className="text-sm font-semibold text-white/80 tracking-wide">
-            ASMART.TEC
-          </span>
+          {showCompactName && (
+            <span className="text-sm font-semibold text-white/80 tracking-wide">
+              ASMART.TEC
+            </span>
+          )}
           <BrandSprig size={28} />
         </div>
       )}

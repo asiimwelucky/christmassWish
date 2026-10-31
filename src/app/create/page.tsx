@@ -115,12 +115,12 @@ function CreateWishForm() {
         <div className="flex items-center justify-between mb-1 shrink-0">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-white/70 hover:text-[#D4AF37] transition-colors"
+            aria-label="Back to home"
+            className="inline-flex items-center text-xs font-semibold text-white/70 hover:text-[#D4AF37] transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back</span>
+            <ArrowLeft className="w-5 h-5" aria-hidden="true" />
           </Link>
-          <BrandHeader variant="compact" />
+          <BrandHeader variant="compact" showCompactName={false} />
         </div>
 
         {/* Title */}
