@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Playfair_Display, Dancing_Script } from 'next/font/google';
 import NowPlaying from '@/components/ui/NowPlaying';
+import { getSiteUrl } from '@/lib/site-url';
 import './globals.css';
 
 const inter = Inter({
@@ -24,10 +25,7 @@ const dancing = Dancing_Script({
   weight: ['600', '700'],
 });
 
-const siteUrl =
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
-  process.env.NEXT_PUBLIC_SITE_URL ||
-  'http://localhost:3000';
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

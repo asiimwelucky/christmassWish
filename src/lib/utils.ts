@@ -1,6 +1,6 @@
 // src/lib/utils.ts — Shared utilities
 
-export const SHARE_PREVIEW_VERSION = '2';
+export const SHARE_PREVIEW_VERSION = '3';
 
 /**
  * Build the WhatsApp share URL for a personalized wish.

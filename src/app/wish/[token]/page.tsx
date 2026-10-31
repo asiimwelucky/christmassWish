@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getWishByToken } from '@/lib/wishes';
+import { getSiteUrl } from '@/lib/site-url';
 import { SHARE_PREVIEW_VERSION } from '@/lib/utils';
 import EvergreenSprig from '@/components/christmas/botanical/EvergreenSprig';
 import PoinsettiaDecoration from '@/components/christmas/botanical/PoinsettiaDecoration';
@@ -16,10 +17,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { token } = await params;
   const wish = await getWishByToken(token);
 
-  const siteUrl =
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    'http://localhost:3000';
+  const siteUrl = getSiteUrl();
   const name = wish?.display_name || 'Someone special';
   const personalMessage = wish?.personal_message?.trim();
 
