@@ -3,6 +3,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { createServiceClient } from '@/lib/supabase/server';
 import type { Wish } from '@/types';
+import EvergreenSprig from '@/components/christmas/botanical/EvergreenSprig';
+import PoinsettiaDecoration from '@/components/christmas/botanical/PoinsettiaDecoration';
+import BotanicalLoadingScreen from '@/components/christmas/botanical/BotanicalLoadingScreen';
 import WishViewClient from './WishViewClient';
 
 interface PageProps {
@@ -32,11 +35,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { token } = await params;
   const wish = await getWish(token);
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://christmas.paradigminstitute.ac.ug';
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
   const name = wish?.display_name || 'Someone special';
 
-  const title = `🎄 Merry Christmas, ${name}! | Paradigm Institute`;
-  const description = `${name} has a special Christmas wish for you from Paradigm Institute, Kagadi, Uganda! Open to read your greeting.`;
+  // Receiver-facing preview: when this link is reshared, the card and the
+  // wording carry ASMART TEC rather than the creator's institution.
+  const title = `🎄 Merry Christmas, ${name}! | ASMART TEC`;
+  const description = `${name} passed a Christmas wish on to you — open your greeting, add your own note and keep the chain going. We wish you a Merry Christmas & Happy New Year!`;
 
   return {
     title,
@@ -45,7 +52,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description,
       url: `${siteUrl}/wish/${token}`,
-      siteName: 'Paradigm Institute Christmas Wishes',
+      siteName: 'Christmas Wishes by ASMART TEC',
       images: [
         {
           url: '/christmas-hero-bg.jpg',
@@ -71,8 +78,36 @@ async function WishPageContent({ params }: PageProps) {
   if (!wish) {
     return (
       <div className="min-h-screen bg-[#0A1628] text-white flex flex-col items-center justify-center p-6 text-center">
-        <div className="w-16 h-16 rounded-full bg-[#C0392B]/20 text-3xl flex items-center justify-center mb-4 border border-[#C0392B]/40">
-          🎄
+        <div className="relative mb-5">
+          <EvergreenSprig
+            width={150}
+            height={82}
+            nodes={9}
+            glow={false}
+            angle={10}
+            seed={61}
+            className="absolute -left-16 top-8 opacity-90"
+          />
+          <EvergreenSprig
+            width={150}
+            height={82}
+            nodes={9}
+            glow={false}
+            flipX
+            angle={10}
+            seed={63}
+            className="absolute -right-16 top-8 opacity-90"
+          />
+          <PoinsettiaDecoration
+            size={92}
+            variant="red"
+            foliage
+            glow
+            sparkles
+            seed={65}
+            duration={7}
+            className="relative z-10"
+          />
         </div>
         <h1 className="text-3xl font-serif font-bold text-white mb-2">Greeting Not Found</h1>
         <p className="text-sm text-white/70 max-w-md mx-auto mb-6">
@@ -91,11 +126,7 @@ async function WishPageContent({ params }: PageProps) {
 export default function WishPage(props: PageProps) {
   return (
     <Suspense
-      fallback={
-        <div className="min-h-screen bg-[#0A1628] text-white flex items-center justify-center">
-          <div className="text-sm text-[#F5D76E] animate-pulse">Loading Christmas Greeting...</div>
-        </div>
-      }
+      fallback={<BotanicalLoadingScreen label="Opening your Christmas greeting..." hint="Unwrapping it slowly" />}
     >
       <WishPageContent {...props} />
     </Suspense>

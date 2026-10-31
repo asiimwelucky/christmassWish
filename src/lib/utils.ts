@@ -7,7 +7,7 @@ export function buildWhatsAppShareUrl(token: string, senderName: string): string
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
   const wishUrl = `${siteUrl}/wish/${token}`;
   const message = encodeURIComponent(
-    `🎄✨ Merry Christmas! Paradigm Institute has a special Christmas wish for you!\n\nOpen your personalized greeting here:\n${wishUrl}\n\nAdd your name and share the joy with someone else! 🎁`
+    `🎄✨ Merry Christmas! ${senderName || 'Someone'} has a personal Christmas wish for you.\n\nOpen your greeting here:\n${wishUrl}\n\nSign it with your own name and pass it on — the chain never has to end! 🎁`
   );
   return `https://wa.me/?text=${message}`;
 }
@@ -64,7 +64,7 @@ export function formatDate(iso: string): string {
 export function buildGreetingMessage(name: string, personalMessage?: string | null): string {
   const intro = `🎄 Merry Christmas, ${name}!`;
   const body = `May this beautiful season fill your heart with peace, your home with happiness, and your new year with endless opportunities.`;
-  const footer = `From all of us at Paradigm Institute, Kagadi — thank you for being part of a community that learns, grows and inspires. 🌟`;
+  const footer = `From all of us at ASMART.TEC, Kagadi — thank you for being part of a community that learns, grows and inspires. 🌟`;
   const cta = `Share the joy. Someone else deserves a Christmas smile too! 🎁`;
 
   return [intro, '', body, '', personalMessage ? `💌 A personal note: ${personalMessage}` : null, '', footer, '', cta]

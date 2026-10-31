@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import BrandHeader from '@/components/christmas/BrandHeader';
+import AsmartLogo from '@/components/christmas/AsmartLogo';
 import Footer from '@/components/christmas/Footer';
 import type { AdminStats, DailyStats } from '@/types';
 import {
@@ -15,7 +15,6 @@ import {
   Download,
   Copy,
   Users,
-  ShieldCheck,
   ArrowLeft,
 } from 'lucide-react';
 
@@ -24,7 +23,6 @@ interface StatsResponse {
   daily: DailyStats[];
   total_wishes_in_db: number;
   range: string;
-  privacy_note: string;
 }
 
 export default function AdminPage() {
@@ -118,9 +116,9 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A1628] text-white flex flex-col justify-between selection:bg-[#D4AF37] selection:text-black">
+    <div className="h-screen max-h-screen bg-[#0A1628] text-white flex flex-col overflow-hidden selection:bg-[#D4AF37] selection:text-black">
       {/* Top Header */}
-      <header className="border-b border-white/10 py-4 px-6 flex items-center justify-between">
+      <header className="border-b border-white/10 py-2 px-4 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
           <Link
             href="/"
@@ -130,8 +128,9 @@ export default function AdminPage() {
             <span>Campaign Home</span>
           </Link>
           <span className="text-white/20">|</span>
-          <h1 className="text-sm font-semibold text-white tracking-wide">
-            Paradigm Institute — Admin Console
+          <h1 className="flex items-center gap-2 text-sm font-semibold text-white tracking-wide">
+            <AsmartLogo size={26} />
+            ASMART.TEC — Admin Console
           </h1>
         </div>
         {isAuthenticated && (
@@ -145,10 +144,10 @@ export default function AdminPage() {
         )}
       </header>
 
-      <main className="flex-1 max-w-6xl mx-auto w-full p-6">
+      <main className="flex-1 max-w-6xl mx-auto w-full p-4 overflow-hidden flex flex-col min-h-0">
         {!isAuthenticated ? (
           /* Login Box */
-          <div className="max-w-md mx-auto my-16 festive-card p-8 border border-[#D4AF37]/30 shadow-2xl">
+          <div className="max-w-md mx-auto my-auto festive-card p-6 border border-[#D4AF37]/30 shadow-2xl">
             <div className="w-12 h-12 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center text-xl mx-auto mb-4 text-[#F5D76E]">
               <Lock className="w-6 h-6" />
             </div>
@@ -191,15 +190,15 @@ export default function AdminPage() {
           </div>
         ) : (
           /* Authenticated Dashboard */
-          <div className="space-y-6">
+          <div className="flex flex-col flex-1 min-h-0 gap-3">
             {/* Control Bar */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/10">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 bg-white/5 p-3 rounded-2xl border border-white/10 shrink-0">
               <div>
-                <h2 className="text-xl font-bold font-serif text-white">
-                  Campaign Telemetry & Performance
+                <h2 className="text-lg font-bold font-serif text-white">
+                  Campaign Telemetry
                 </h2>
-                <p className="text-xs text-white/60">
-                  Aggregated, anonymous metrics for Paradigm Institute Christmas campaign.
+                <p className="text-[11px] text-white/60">
+                  Aggregated metrics for the ASMART.TEC Christmas campaign.
                 </p>
               </div>
 
@@ -231,81 +230,65 @@ export default function AdminPage() {
             </div>
 
             {/* Metrics Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              <div className="festive-card p-5 border border-[#D4AF37]/30">
-                <div className="flex items-center justify-between text-white/60 mb-2">
-                  <span className="text-xs font-medium uppercase tracking-wider">Total Wishes</span>
-                  <Send className="w-4 h-4 text-[#F5D76E]" />
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 flex-1 min-h-0">
+              <div className="festive-card p-3 border border-[#D4AF37]/30">
+                <div className="flex items-center justify-between text-white/60 mb-1">
+                  <span className="text-[11px] font-medium uppercase tracking-wider">Total Wishes</span>
+                  <Send className="w-3.5 h-3.5 text-[#F5D76E]" />
                 </div>
-                <div className="text-3xl font-extrabold font-serif text-[#F5D76E]">
+                <div className="text-2xl font-extrabold font-serif text-[#F5D76E]">
                   {stats?.summary?.total_wishes_created ?? stats?.total_wishes_in_db ?? 0}
                 </div>
-                <p className="text-[11px] text-white/50 mt-1">Unique greetings created</p>
               </div>
 
-              <div className="festive-card p-5 border border-white/10">
-                <div className="flex items-center justify-between text-white/60 mb-2">
-                  <span className="text-xs font-medium uppercase tracking-wider">Page Views</span>
-                  <Eye className="w-4 h-4 text-blue-400" />
+              <div className="festive-card p-3 border border-white/10">
+                <div className="flex items-center justify-between text-white/60 mb-1">
+                  <span className="text-[11px] font-medium uppercase tracking-wider">Page Views</span>
+                  <Eye className="w-3.5 h-3.5 text-blue-400" />
                 </div>
-                <div className="text-3xl font-extrabold font-serif text-white">
+                <div className="text-2xl font-extrabold font-serif text-white">
                   {stats?.summary?.total_page_views ?? 0}
                 </div>
-                <p className="text-[11px] text-white/50 mt-1">Campaign visits recorded</p>
               </div>
 
-              <div className="festive-card p-5 border border-white/10">
-                <div className="flex items-center justify-between text-white/60 mb-2">
-                  <span className="text-xs font-medium uppercase tracking-wider">WhatsApp Shares</span>
-                  <Share2 className="w-4 h-4 text-[#25D366]" />
+              <div className="festive-card p-3 border border-white/10">
+                <div className="flex items-center justify-between text-white/60 mb-1">
+                  <span className="text-[11px] font-medium uppercase tracking-wider">WhatsApp Shares</span>
+                  <Share2 className="w-3.5 h-3.5 text-[#25D366]" />
                 </div>
-                <div className="text-3xl font-extrabold font-serif text-white">
+                <div className="text-2xl font-extrabold font-serif text-white">
                   {stats?.summary?.total_whatsapp_shares ?? 0}
                 </div>
-                <p className="text-[11px] text-white/50 mt-1">Direct WhatsApp clicks</p>
               </div>
 
-              <div className="festive-card p-5 border border-white/10">
-                <div className="flex items-center justify-between text-white/60 mb-2">
-                  <span className="text-xs font-medium uppercase tracking-wider">Card Downloads</span>
-                  <Download className="w-4 h-4 text-purple-400" />
+              <div className="festive-card p-3 border border-white/10">
+                <div className="flex items-center justify-between text-white/60 mb-1">
+                  <span className="text-[11px] font-medium uppercase tracking-wider">Card Downloads</span>
+                  <Download className="w-3.5 h-3.5 text-purple-400" />
                 </div>
-                <div className="text-3xl font-extrabold font-serif text-white">
+                <div className="text-2xl font-extrabold font-serif text-white">
                   {stats?.summary?.total_card_downloads ?? 0}
                 </div>
-                <p className="text-[11px] text-white/50 mt-1">Exported PNG cards</p>
               </div>
 
-              <div className="festive-card p-5 border border-white/10">
-                <div className="flex items-center justify-between text-white/60 mb-2">
-                  <span className="text-xs font-medium uppercase tracking-wider">Link Copies</span>
-                  <Copy className="w-4 h-4 text-teal-400" />
+              <div className="festive-card p-3 border border-white/10">
+                <div className="flex items-center justify-between text-white/60 mb-1">
+                  <span className="text-[11px] font-medium uppercase tracking-wider">Link Copies</span>
+                  <Copy className="w-3.5 h-3.5 text-teal-400" />
                 </div>
-                <div className="text-2xl font-bold font-serif text-white">
+                <div className="text-xl font-bold font-serif text-white">
                   {stats?.summary?.total_link_copies ?? 0}
                 </div>
-                <p className="text-[11px] text-white/50 mt-1">Direct links copied</p>
               </div>
 
-              <div className="festive-card p-5 border border-white/10">
-                <div className="flex items-center justify-between text-white/60 mb-2">
-                  <span className="text-xs font-medium uppercase tracking-wider">Unique Browsers</span>
-                  <Users className="w-4 h-4 text-cyan-400" />
+              <div className="festive-card p-3 border border-white/10">
+                <div className="flex items-center justify-between text-white/60 mb-1">
+                  <span className="text-[11px] font-medium uppercase tracking-wider">Unique Browsers</span>
+                  <Users className="w-3.5 h-3.5 text-cyan-400" />
                 </div>
-                <div className="text-2xl font-bold font-serif text-white">
+                <div className="text-xl font-bold font-serif text-white">
                   {stats?.summary?.unique_visiting_browsers ?? 0}
                 </div>
-                <p className="text-[11px] text-white/50 mt-1">Distinct session hashes</p>
-              </div>
-            </div>
-
-            {/* Privacy Compliance Banner */}
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3 text-xs text-white/70">
-              <ShieldCheck className="w-5 h-5 text-[#27AE60] shrink-0 mt-0.5" />
-              <div>
-                <span className="font-semibold text-white">Privacy Guarantee: </span>
-                {stats?.privacy_note ||
-                  'All statistics are strictly aggregate counts. No PII, phone numbers, or emails are stored or tracked.'}
               </div>
             </div>
           </div>
@@ -316,4 +299,3 @@ export default function AdminPage() {
     </div>
   );
 }
-

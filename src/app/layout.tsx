@@ -23,48 +23,50 @@ const dancing = Dancing_Script({
   weight: ['600', '700'],
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://christmas.paradigminstitute.ac.ug';
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: 'Merry Christmas from Paradigm Institute | Kagadi, Uganda',
+  title: 'Merry Christmas from ASMART.TEC | Kagadi, Uganda',
   description:
-    'Share the joy this Christmas! Create your personalized Christmas greeting from Paradigm Institute, Kagadi, Uganda, and spread the love with friends and family.',
+    'Share the joy this Christmas! Create a personalized greeting from ASMART.TEC and spread the love with friends and family.',
   keywords: [
-    'Paradigm Institute',
+    'ASMART.TEC',
     'Christmas Wishes',
     'Kagadi Uganda',
     'Christmas Greeting',
     'Share Christmas',
     'Festive',
   ],
-  authors: [{ name: 'Paradigm Institute', url: siteUrl }],
+  authors: [{ name: 'ASMART.TEC', url: siteUrl }],
   openGraph: {
     type: 'website',
     locale: 'en_UG',
     url: siteUrl,
-    siteName: 'Paradigm Institute Christmas Wishes',
-    title: '🎄 Merry Christmas from Paradigm Institute!',
+    siteName: 'ASMART.TEC Christmas Wishes',
+    title: '🎄 Merry Christmas from ASMART.TEC!',
     description:
-      'Someone has a special Christmas message for you from Paradigm Institute, Kagadi, Uganda. Open it, add your name, and share the joy!',
+      'Someone has a special Christmas message for you from ASMART.TEC. Open it, add your name, and share the joy!',
     images: [
       {
         url: '/christmas-hero-bg.jpg',
         width: 1280,
         height: 720,
-        alt: 'Paradigm Institute Christmas Wishes 2024',
+        alt: 'ASMART.TEC Christmas Wishes',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '🎄 Merry Christmas from Paradigm Institute!',
-    description: 'A special Christmas message awaits you from Paradigm Institute, Kagadi, Uganda.',
+    title: '🎄 Merry Christmas from ASMART.TEC!',
+    description: 'A special Christmas message awaits you from ASMART.TEC.',
     images: ['/christmas-hero-bg.jpg'],
   },
   robots: { index: true, follow: true },
   icons: {
-    icon: '/favicon.ico',
+    icon: '/asmart-logo-sm.jpg',
   },
 };
 

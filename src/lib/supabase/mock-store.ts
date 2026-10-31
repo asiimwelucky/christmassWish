@@ -19,7 +19,7 @@ interface StoredEvent {
 // Global singleton to survive HMR in development
 declare global {
   // eslint-disable-next-line no-var
-  var __paradigm_mock_store: {
+  var __asmart_mock_store: {
     wishes: Map<string, StoredWish>;
     events: StoredEvent[];
     campaignConfig: {
@@ -38,14 +38,14 @@ declare global {
   } | undefined;
 }
 
-if (!globalThis.__paradigm_mock_store) {
+if (!globalThis.__asmart_mock_store) {
   const wishes = new Map<string, StoredWish>();
   
   // Seed a demo wish
   const demoWish: StoredWish = {
     id: 'demo-wish-1',
-    public_token: 'paradigm-welcome',
-    display_name: 'Paradigm Institute Family',
+    public_token: 'asmart-welcome',
+    display_name: 'ASMART.TEC Family',
     recipient_type: 'everyone',
     personal_message: 'Wishing you peace, great health, and tremendous success in all your studies and life dreams this festive season!',
     template_version: 'v1',
@@ -55,35 +55,35 @@ if (!globalThis.__paradigm_mock_store) {
   };
   wishes.set(demoWish.public_token, demoWish);
 
-  globalThis.__paradigm_mock_store = {
+  globalThis.__asmart_mock_store = {
     wishes,
     events: [
       {
         id: 'seed-event-1',
         event_type: 'wish_created',
         session_key_hash: 'seed-hash',
-        wish_id: 'paradigm-welcome',
+        wish_id: 'asmart-welcome',
         campaign_source: 'direct',
         created_at: new Date().toISOString(),
       },
     ],
     campaignConfig: {
       id: '00000000-0000-0000-0000-000000000001',
-      campaign_name: 'Paradigm Institute Christmas Wishes 2024',
+      campaign_name: 'ASMART.TEC Christmas Wishes',
       campaign_status: 'active',
       main_message: 'Spreading joy and goodwill across Kagadi and beyond!',
       skit_version: 'v1',
       start_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
       end_at: null,
       show_public_counter: true,
-      announcement: '🎄 Season Greetings from Paradigm Institute! Create and send your custom wish today.',
+      announcement: '🎄 Season Greetings from ASMART.TEC! Create and send your custom wish today.',
       privacy_notice: 'We collect only anonymous usage statistics — no registration required.',
       retention_days: 90,
     },
   };
 }
 
-export const mockStore = globalThis.__paradigm_mock_store;
+export const mockStore = globalThis.__asmart_mock_store;
 
 /**
  * Creates a Supabase-compatible mock query builder

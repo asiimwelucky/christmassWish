@@ -1,19 +1,18 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import BrandHeader from '@/components/christmas/BrandHeader';
-import ChristmasLights from '@/components/christmas/ChristmasLights';
 import SnowEffect from '@/components/christmas/SnowEffect';
-import StarField from '@/components/christmas/StarField';
-import Footer from '@/components/christmas/Footer';
-import { GreetingCard } from '@/components/ui/GreetingCard';
-import ShareModal from '@/components/ui/ShareModal';
+import AsmartLogo from '@/components/christmas/AsmartLogo';
+import BotanicalDivider from '@/components/christmas/botanical/BotanicalDivider';
+import ChristmasFloralCorner from '@/components/christmas/botanical/ChristmasFloralCorner';
+import DesignerCredit from '@/components/ui/DesignerCredit';
+import NowPlaying from '@/components/ui/NowPlaying';
 import ConfettiEffect from '@/components/ui/ConfettiEffect';
 import { audioChimes } from '@/components/ui/AudioChimes';
 import { trackEvent } from '@/lib/analytics';
 import type { Wish } from '@/types';
-import { Sparkles, Share2, ArrowLeft, Heart } from 'lucide-react';
+import { Repeat } from 'lucide-react';
 
 interface WishViewClientProps {
   wish: Wish;
@@ -21,107 +20,131 @@ interface WishViewClientProps {
 
 export default function WishViewClient({ wish }: WishViewClientProps) {
   const [showConfetti, setShowConfetti] = useState(true);
-  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const cardRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     trackEvent('wish_link_opened', { wish_id: wish.public_token });
     audioChimes.playTwinkle();
   }, [wish.public_token]);
 
+  // Handing the wish on keeps the chain alive: the new card records this token
+  // as its parent, and its own receiver gets the same button.
+  const chainHref = `/create?from=${encodeURIComponent(wish.public_token)}&by=${encodeURIComponent(
+    wish.display_name,
+  )}`;
+
   return (
-    <div className="relative min-h-screen bg-[#0A1628] text-white flex flex-col justify-between overflow-hidden">
-      <StarField />
+    <div className="relative flex min-h-[100svh] flex-col overflow-x-hidden bg-[#0A1628] text-white">
       <SnowEffect />
       <ConfettiEffect active={showConfetti} onComplete={() => setShowConfetti(false)} />
 
-      <ShareModal
-        isOpen={isShareModalOpen}
-        onClose={() => setIsShareModalOpen(false)}
-        token={wish.public_token}
-        senderName={wish.display_name}
-        cardRef={cardRef}
-      />
-
-      {/* Top Lights */}
-      <div className="relative z-10">
-        <ChristmasLights count={12} />
+      <div className="relative z-20 flex shrink-0 justify-center px-3 pt-3">
+        <NowPlaying />
       </div>
 
-      <main className="relative z-10 flex-1 max-w-3xl mx-auto w-full px-4 py-8 text-center flex flex-col items-center justify-center">
-        {/* Header */}
-        <div className="w-full flex items-center justify-between mb-6">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-white/70 hover:text-[#D4AF37] transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Home</span>
-          </Link>
-          <BrandHeader variant="compact" />
-        </div>
+      <main className="relative z-10 flex min-h-0 flex-1 items-center justify-center px-3 py-2">
+        {/*
+          9:16 is the ideal shape, expressed as a MINIMUM height so a long
+          message on a short screen grows the card instead of clipping copy.
+          Width caps at 56.25svh, which is exactly 9/16 of a full screen —
+          hence the 100svh term below.
+        */}
+        <div
+          className="christmas-card relative flex w-full max-w-[56.25svh] flex-col items-center justify-center overflow-hidden border border-[rgba(212,175,55,0.5)] bg-[rgba(16,29,50,0.95)] px-7 py-8 text-center shadow-2xl"
+          style={{ minHeight: 'min(calc((100vw - 1.75rem) * 16 / 9), 100svh)' }}
+        >
+          <div className="christmas-card-frame" aria-hidden="true" />
+          {/*
+            Botanical frame. Two hero sprays in the top-left/bottom-right
+            corners, lighter cream pairs opposite. All orientation happens
+            inside the SVGs (never a CSS transform) because this exact node is
+            rasterised by html2canvas for the WhatsApp download.
+          */}
+          <div className="absolute inset-0 z-0" aria-hidden="true">
+            <ChristmasFloralCorner
+              corner="top-left"
+              sizePct={20}
+              density="full"
+              style={{ top: 12, left: 12 }}
+              seed={5}
+            />
+            <ChristmasFloralCorner
+              corner="bottom-right"
+              sizePct={20}
+              density="full"
+              style={{ bottom: 12, right: 12 }}
+              seed={13}
+            />
+            <ChristmasFloralCorner
+              corner="top-right"
+              sizePct={12}
+              density="light"
+              variant="cream"
+              sparkles={false}
+              style={{ top: 18, right: 18 }}
+              seed={21}
+            />
+            <ChristmasFloralCorner
+              corner="bottom-left"
+              sizePct={12}
+              density="light"
+              variant="cream"
+              sparkles={false}
+              style={{ bottom: 18, left: 18 }}
+              seed={29}
+            />
+          </div>
 
-        {/* Greeting Banner */}
-        <div className="mb-6">
-          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-[#D4AF37]/20 text-[#F5D76E] border border-[#D4AF37]/40 mb-3 pulse-glow">
-            🎄 A Christmas Greeting Just For You
-          </span>
-          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-white">
-            Merry Christmas,{' '}
-            <span className="gold-shimmer">{wish.display_name}</span>!
-          </h1>
-        </div>
+          {/* Receiver-side branding, in flow above the message so it can never
+              be clipped and is part of the downloaded card. */}
+          <div className="relative z-10 flex shrink-0 flex-col items-center gap-1.5 pb-6">
+            <AsmartLogo size={44} />
+            <span className="text-[9px] uppercase tracking-[0.28em] text-[rgba(255,255,255,0.45)]">
+              ASMART TEC
+            </span>
+          </div>
 
-        {/* Card Component */}
-        <div className="w-full max-w-lg mb-8">
-          <GreetingCard
-            ref={cardRef}
-            displayName={wish.display_name}
-            recipientType={wish.recipient_type}
-            personalMessage={wish.personal_message}
-          />
-        </div>
-
-        {/* Share & Download Action */}
-        <div className="flex justify-center items-center w-full max-w-sm mb-8">
-          <button
-            onClick={() => setIsShareModalOpen(true)}
-            className="btn-gold w-full flex items-center justify-center gap-2 py-3 px-6 text-xs shadow-lg"
-          >
-            <Share2 className="w-4 h-4" />
-            <span>Share & Download Card</span>
-          </button>
-        </div>
-
-        {/* Viral Forward Loop Card */}
-        <div className="w-full max-w-lg festive-card p-6 border border-[#27AE60]/40 text-left bg-gradient-to-r from-[#0D4A28]/40 to-[#142850]/40">
-          <div className="flex items-start gap-4">
-            <div className="w-10 h-10 rounded-full bg-[#27AE60]/20 text-[#27AE60] flex items-center justify-center shrink-0 text-xl">
-              🎁
+          <div className="relative z-10">
+            <p className="text-[11px] uppercase tracking-[0.25em] text-[#F5D76E]">
+              A Christmas wish for you
+            </p>
+            <h1 className="christmas-title mt-3 font-serif text-[clamp(1.9rem,7svh,2.9rem)] font-bold leading-tight text-white">
+              Merry Christmas!
+            </h1>
+            <div className="my-4 flex justify-center" aria-hidden="true">
+              <BotanicalDivider size={24} ruleWidth={50} />
             </div>
-            <div className="flex-1">
-              <h3 className="font-semibold text-sm text-white mb-1">
-                Pass the Christmas Joy Forward!
-              </h3>
-              <p className="text-xs text-white/70 mb-3 leading-relaxed">
-                Create your own customized Christmas card and surprise a friend, parent, teacher, or student today.
-              </p>
-              <Link
-                href={`/create?from=${wish.public_token}`}
-                className="btn-primary py-2 px-4 text-xs inline-flex items-center gap-2 shadow"
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Create Your Own Wish</span>
-              </Link>
-            </div>
+            <p className="mx-auto max-w-[19rem] text-[clamp(0.9rem,2.5svh,1.15rem)] leading-relaxed break-words text-[rgba(255,248,240,0.9)]">
+              {wish.personal_message?.trim() ||
+                'Wishing you peace, joy, and love this Christmas and throughout the New Year.'}
+            </p>
+            <p className="mt-6 text-[13px] text-[rgba(255,255,255,0.60)]">With love,</p>
+            <p className="mt-1 text-[clamp(1.1rem,3.4svh,1.6rem)] font-semibold break-words text-[#F5D76E]">
+              {wish.display_name}
+            </p>
+            <p className="mx-auto mt-3 max-w-[15rem] text-[10px] tracking-wide text-[rgba(255,255,255,0.45)]">
+              {wish.parent_token
+                ? 'This wish was passed on — add yours and keep it travelling.'
+                : 'Add your own wish and pass the joy on.'}
+            </p>
+          </div>
+
+          <div className="relative z-10 flex shrink-0 justify-center pt-5">
+            <DesignerCredit />
           </div>
         </div>
       </main>
 
-      <div className="relative z-10">
-        <Footer />
+      <div className="relative z-20 shrink-0 px-4 pb-4">
+        <div className="mx-auto flex w-[min(92vw,22rem)] flex-col gap-2">
+          <Link
+            href={chainHref}
+            className="btn-gold flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold uppercase tracking-wider shadow-lg"
+          >
+            <Repeat className="h-4 w-4" />
+            <span>Add your wish &amp; pass it on</span>
+          </Link>
+        </div>
       </div>
     </div>
   );
 }
-

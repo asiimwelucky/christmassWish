@@ -2,6 +2,9 @@
 
 import React, { forwardRef } from 'react';
 import type { RecipientType } from '@/types';
+import AsmartLogo from '@/components/christmas/AsmartLogo';
+import BotanicalDivider from '@/components/christmas/botanical/BotanicalDivider';
+import ChristmasFloralCorner from '@/components/christmas/botanical/ChristmasFloralCorner';
 
 interface GreetingCardProps {
   displayName: string;
@@ -24,99 +27,123 @@ export const GreetingCard = forwardRef<HTMLDivElement, GreetingCardProps>(
     return (
       <div
         ref={ref}
-        className={`relative overflow-hidden rounded-3xl p-8 sm:p-10 text-center select-none shadow-2xl ${className}`}
+        className={`relative overflow-hidden rounded-3xl px-5 py-6 sm:px-7 sm:py-7 text-center select-none shadow-2xl ${className}`}
         style={{
           background: 'radial-gradient(ellipse at top, #142850 0%, #0A1628 70%, #060D18 100%)',
           border: '2px solid rgba(212, 175, 55, 0.45)',
           boxShadow: '0 0 35px rgba(212, 175, 55, 0.2), inset 0 0 40px rgba(0,0,0,0.4)',
         }}
       >
-        {/* Decorative corner flourishes */}
-        <div className="absolute top-3 left-4 text-xl opacity-75 text-[#D4AF37]" aria-hidden="true">
-          ✦ ❅
-        </div>
-        <div className="absolute top-3 right-4 text-xl opacity-75 text-[#D4AF37]" aria-hidden="true">
-          ❅ ✦
-        </div>
-        <div className="absolute bottom-3 left-4 text-xl opacity-75 text-[#D4AF37]" aria-hidden="true">
-          ❅ ✦
-        </div>
-        <div className="absolute bottom-3 right-4 text-xl opacity-75 text-[#D4AF37]" aria-hidden="true">
-          ✦ ❅
+        {/*
+          Floral frame. Kept in its own stacking layer below the text: the two
+          hero sprays hug the top-left/bottom-right corners and taper before
+          they reach the centred copy, so the name and message stay the focus.
+        */}
+        <div className="absolute inset-0" style={{ zIndex: 0 }} aria-hidden="true">
+          <ChristmasFloralCorner
+            corner="top-left"
+            sizePct={25}
+            density="full"
+            style={{ top: -7, left: -7 }}
+            seed={3}
+          />
+          <ChristmasFloralCorner
+            corner="bottom-right"
+            sizePct={25}
+            density="full"
+            variant="red"
+            style={{ bottom: -7, right: -7 }}
+            seed={11}
+          />
+          <ChristmasFloralCorner
+            corner="top-right"
+            sizePct={15}
+            density="light"
+            variant="cream"
+            sparkles={false}
+            style={{ top: 7, right: 7 }}
+            seed={19}
+          />
+          <ChristmasFloralCorner
+            corner="bottom-left"
+            sizePct={15}
+            density="light"
+            variant="cream"
+            sparkles={false}
+            style={{ bottom: 7, left: 7 }}
+            seed={27}
+          />
         </div>
 
-        {/* Institution Badge */}
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <div
-            className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white shadow-md"
-            style={{ background: 'linear-gradient(135deg, #C0392B 0%, #D4AF37 100%)' }}
+        <div className="relative" style={{ zIndex: 1 }}>
+          {/* Brand Badge */}
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <AsmartLogo size={34} />
+            <p className="text-left text-[10px] font-semibold uppercase tracking-widest text-[#D4AF37]">
+              ASMART.TEC
+            </p>
+          </div>
+
+          {/* Recipient Tag */}
+          <div className="inline-block px-3 py-1 rounded-full bg-[rgba(212,175,55,0.15)] border border-[rgba(212,175,55,0.3)] text-[#F5D76E] text-xs font-medium tracking-wide mb-3">
+            {RECIPIENT_LABELS[recipientType] || 'Special Christmas Blessing'}
+          </div>
+
+          {/* Heading */}
+          <h2
+            className="text-3xl sm:text-4xl font-serif font-bold text-white mb-2 tracking-tight"
+            style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
           >
-            P
+            Merry Christmas!
+          </h2>
+
+          {/* Name Highlight */}
+          <div className="my-3">
+            <p className="text-xs uppercase tracking-widest text-[rgba(255,255,255,0.60)] mb-1">Specially for</p>
+            <span
+              className="text-2xl sm:text-3xl font-bold tracking-wide"
+              style={{
+                // Solid gold, not gradient-clipped text: html2canvas paints a
+                // background-clip:text gradient as a filled rectangle, which
+                // buries the recipient's name in the downloaded card.
+                color: '#F5D76E',
+                textShadow: '0 0 18px rgba(212,175,55,0.55), 0 2px 8px rgba(0,0,0,0.5)',
+                fontFamily: 'var(--font-playfair), serif',
+              }}
+            >
+              {displayName || 'You'}
+            </span>
           </div>
-          <div className="text-left">
-            <p className="text-[10px] tracking-widest uppercase font-semibold text-[#D4AF37]">
-              Paradigm Institute
-            </p>
-            <p className="text-[9px] text-white/50 tracking-wide">Kagadi, Uganda</p>
+
+          {/* Botanical rule */}
+          <div className="flex justify-center my-4">
+            <BotanicalDivider size={26} ruleWidth={54} />
           </div>
-        </div>
 
-        {/* Recipient Tag */}
-        <div className="inline-block px-3 py-1 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/30 text-[#F5D76E] text-xs font-medium tracking-wide mb-3">
-          {RECIPIENT_LABELS[recipientType] || 'Special Christmas Blessing'}
-        </div>
+          {/* Body Message — narrower than the card so the corner sprays stay behind empty margins */}
+          <p className="text-sm sm:text-base text-[rgba(255,248,240,0.9)] leading-relaxed max-w-[17.5rem] mx-auto mb-4 font-light">
+            May the wonder, peace, and boundless joy of Christmas touch your heart and brighten your home.
+            Wishing you a brilliant season and an inspiring New Year ahead!
+          </p>
 
-        {/* Heading */}
-        <h2
-          className="text-3xl sm:text-4xl font-serif font-bold text-white mb-2 tracking-tight"
-          style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
-        >
-          Merry Christmas!
-        </h2>
+          {/* Personal Note if provided */}
+          {personalMessage && (
+            <div className="my-4 p-4 rounded-xl bg-[rgba(255,255,255,0.04)] border border-[rgba(212,175,55,0.25)] max-w-[17.5rem] mx-auto text-left">
+              <p className="text-[11px] text-[#D4AF37] font-semibold uppercase tracking-wider mb-1">
+                Personal Note
+              </p>
+              <p className="text-sm italic text-[rgba(255,255,255,0.95)] leading-snug break-words">
+                &ldquo;{personalMessage}&rdquo;
+              </p>
+            </div>
+          )}
 
-        {/* Name Highlight */}
-        <div className="my-3">
-          <p className="text-xs uppercase tracking-widest text-white/60 mb-1">Specially for</p>
-          <span
-            className="text-2xl sm:text-3xl font-bold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#F5D76E] via-[#FFF8F0] to-[#D4AF37]"
-            style={{
-              textShadow: '0 0 20px rgba(212,175,55,0.4)',
-              fontFamily: 'var(--font-playfair), serif',
-            }}
-          >
-            {displayName || 'You'}
-          </span>
-        </div>
-
-        {/* Central Decorative Ribbon */}
-        <div className="flex items-center justify-center gap-2 my-4 text-[#D4AF37]/60">
-          <span className="h-[1px] w-12 bg-gradient-to-r from-transparent to-[#D4AF37]" />
-          <span className="text-sm">🎄 🎁 🌟</span>
-          <span className="h-[1px] w-12 bg-gradient-to-l from-transparent to-[#D4AF37]" />
-        </div>
-
-        {/* Body Message */}
-        <p className="text-sm sm:text-base text-[#FFF8F0]/90 leading-relaxed max-w-md mx-auto mb-4 font-light">
-          May the wonder, peace, and boundless joy of Christmas touch your heart and brighten your home.
-          Wishing you a brilliant season and an inspiring New Year ahead!
-        </p>
-
-        {/* Personal Note if provided */}
-        {personalMessage && (
-          <div className="my-4 p-4 rounded-xl bg-white/[0.04] border border-[#D4AF37]/25 max-w-md mx-auto text-left">
-            <p className="text-[11px] text-[#D4AF37] font-semibold uppercase tracking-wider mb-1 flex items-center gap-1.5">
-              <span>💌</span> Personal Note
-            </p>
-            <p className="text-sm italic text-white/95 leading-snug break-words">
-              &ldquo;{personalMessage}&rdquo;
+          {/* Brand signature */}
+          <div className="pt-4 mt-4 border-t-[rgba(255,255,255,0.10)] mx-auto max-w-[15rem]">
+            <p className="text-[11px] text-[rgba(212,175,55,0.8)] tracking-wide">
+              ASMART.TEC
             </p>
           </div>
-        )}
-
-        {/* Institute Motto */}
-        <div className="pt-4 mt-4 border-t border-white/10 flex items-center justify-between text-[11px] text-white/50">
-          <span>Building Bright Futures</span>
-          <span className="text-[#D4AF37]/80">christmas.paradigminstitute.ac.ug</span>
         </div>
       </div>
     );
@@ -124,4 +151,3 @@ export const GreetingCard = forwardRef<HTMLDivElement, GreetingCardProps>(
 );
 
 GreetingCard.displayName = 'GreetingCard';
-

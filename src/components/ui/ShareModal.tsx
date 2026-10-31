@@ -2,6 +2,8 @@
 
 import React, { useState, RefObject } from 'react';
 import html2canvas from 'html2canvas';
+import AsmartLogo from '@/components/christmas/AsmartLogo';
+import DesignerCredit from '@/components/ui/DesignerCredit';
 import { trackEvent } from '@/lib/analytics';
 import { buildWhatsAppShareUrl, buildWishUrl } from '@/lib/utils';
 import { Share2, Copy, Check, Download, MessageCircle, X } from 'lucide-react';
@@ -28,6 +30,7 @@ export default function ShareModal({
 
   const wishUrl = buildWishUrl(token);
   const waUrl = buildWhatsAppShareUrl(token, senderName);
+  const brandLabel = 'ASMART.TEC';
 
   const handleCopy = async () => {
     try {
@@ -50,7 +53,7 @@ export default function ShareModal({
       try {
         await navigator.share({
           title: `🎄 Merry Christmas from ${senderName}!`,
-          text: `I made a special Christmas wish for you from Paradigm Institute! Open it here:`,
+          text: `${senderName} passed a Christmas wish on to you from ${brandLabel} — open it, sign it and keep the chain going!`,
           url: wishUrl,
         });
         trackEvent('native_share_attempted', { wish_id: token, campaign_source: 'native_share' });
@@ -74,7 +77,7 @@ export default function ShareModal({
       });
       const dataUrl = canvas.toDataURL('image/png');
       const link = document.createElement('a');
-      link.download = `Paradigm-Christmas-Wish-${senderName.replace(/\s+/g, '_')}.png`;
+      link.download = `${brandLabel.replace(/\s+/g, '-')}-Christmas-Wish-${senderName.replace(/\s+/g, '_')}.png`;
       link.href = dataUrl;
       link.click();
     } catch (err) {
@@ -103,14 +106,14 @@ export default function ShareModal({
 
         {/* Modal Header */}
         <div className="text-center mb-6">
-          <div className="w-12 h-12 mx-auto mb-3 rounded-full flex items-center justify-center bg-[#D4AF37]/20 border border-[#D4AF37]/50 text-2xl">
-            🎁
+          <div className="mb-3 flex justify-center">
+            <AsmartLogo size={52} />
           </div>
           <h3 id="share-title" className="text-2xl font-serif font-bold text-white">
             Share Your Christmas Wish!
           </h3>
           <p className="text-xs text-white/70 mt-1">
-            Spread love, joy, and festive cheer with your friends & family in Kagadi and beyond.
+            Send it on WhatsApp, or download the card — then let the receiver add their own wish and keep the chain going.
           </p>
         </div>
 
@@ -167,12 +170,10 @@ export default function ShareModal({
           )}
         </div>
 
-        {/* Small reassurance */}
-        <p className="text-[11px] text-center text-white/40 mt-5">
-          🔒 No phone numbers or emails collected. Safe, private & free.
-        </p>
+        <div className="mt-6 flex justify-center border-t border-white/10 pt-4">
+          <DesignerCredit />
+        </div>
       </div>
     </div>
   );
 }
-

@@ -1,9 +1,9 @@
-# 🎄 Paradigm Institute Christmas Wishes & Interactive Skit
+# 🎄 ASMART.TEC Christmas Wishes & Interactive Skit
 
-> **Paradigm Institute — Kagadi, Uganda**  
+> **ASMART.TEC — Kagadi, Uganda**
 > *Building Bright Futures with Community, Knowledge, and Hope.*
 
-A festive, viral Christmas greeting platform and interactive multimedia holiday skit web application crafted for **Paradigm Institute** in Kagadi, Uganda.
+A festive Christmas greeting platform and interactive multimedia holiday skit web application by **ASMART.TEC**.
 
 ---
 
@@ -12,7 +12,7 @@ A festive, viral Christmas greeting platform and interactive multimedia holiday 
 - **🎁 Personalized Christmas Wish Maker (`/create`)**
   - Create customized festive greeting cards for friends, family, students, teachers, or colleagues.
   - Optional personalized message with character counter and holiday prompt suggestions.
-  - Real-time live card preview with festive ornaments, gold shimmer typography, and school insignia.
+  - Real-time live card preview with festive ornaments, gold shimmer typography, and the ASMART.TEC logo.
   - Festive animations: falling snowflakes, twinkling starfield, glowing Christmas lights, and celebration confetti.
 
 - **📲 Viral Share Engine (`/wish/[token]`)**
@@ -43,55 +43,62 @@ A festive, viral Christmas greeting platform and interactive multimedia holiday 
 
 ### 1. Prerequisites
 - **Node.js** 20.x or higher
-- **npm** or **pnpm**
+- **npm**
 
-### 2. Installation
-```bash
-git clone <repo-url>
-cd skit
-npm install
-```
+### 2. Install and run on Windows
 
-### 3. Environment Configuration
-Copy the example environment file:
-```bash
-cp .env.example .env.local
-```
-
-Configure your environment variables:
-```env
-# Base site URL for sharing links
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-
-# Supabase (Optional for local development; app will use mock store if not provided)
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-
-# Admin Dashboard Secret (minimum 16 characters)
-ADMIN_AUTH_SECRET=paradigm-christmas-secret-key-2024-secure
-```
-
-### 4. Database Setup (Optional for Supabase production)
-Run the SQL migration script located at:
-```
-supabase/migrations/20241201000000_init_christmas_schema.sql
-```
-This sets up the `campaign_config`, `wishes`, and `analytics_events` tables along with Row Level Security (RLS) policies and the `get_analytics_summary()` RPC function.
-
-### 5. Running the Application
-```bash
-# Start development server
+Open PowerShell in the project folder:
+```powershell
+cd C:\path\to\skit
+npm ci
+if (-not (Test-Path .env.local)) { Copy-Item .env.example .env.local }
+notepad .env.local
 npm run dev
+```
 
-# Run production build
+Or use Command Prompt:
+```cmd
+cd /d C:\path\to\skit
+npm ci
+if not exist .env.local copy .env.example .env.local
+notepad .env.local
+npm run dev
+```
+
+The local example values use the in-memory mock store, so Supabase is optional for a local preview. Open [http://localhost:3000](http://localhost:3000).
+
+To test a production build locally:
+```bash
 npm run build
-
-# Start production server
 npm run start
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to view the application!
+### 3. Production deployment on Vercel
+
+1. Create a Supabase project for persistent production wishes and analytics.
+2. In its SQL Editor, run `supabase/migrations/20241201000000_init_christmas_schema.sql`, then `supabase/migrations/20261031000000_rename_campaign_to_asmart.sql`. If the first migration was already applied, run only the second.
+3. Sign in and link this folder to your Vercel project:
+   ```bash
+   npx vercel login
+   npx vercel link
+   ```
+4. In the Vercel project settings, add these environment variables for **Production** (and Preview if needed):
+   - `NEXT_PUBLIC_SITE_URL` — the final `https://` production domain
+   - `NEXT_PUBLIC_SUPABASE_URL` — the Supabase project URL
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` — the Supabase publishable/anon key
+   - `SUPABASE_SERVICE_ROLE_KEY` — the Supabase service-role key; keep it private
+   - `ADMIN_AUTH_SECRET` — a new, private random value (at least 32 characters)
+5. Deploy:
+   ```bash
+   npx vercel --prod
+   ```
+
+Generate a private admin secret locally with:
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+Set it in Vercel; do not commit `.env.local` or expose `SUPABASE_SERVICE_ROLE_KEY`. Production needs a real Supabase project: without it, the app uses an in-memory demo store that is not persistent.
 
 ---
 
@@ -124,5 +131,5 @@ Visit [http://localhost:3000](http://localhost:3000) to view the application!
 
 ## 📄 License & Attribution
 
-Developed for **Paradigm Institute**, Kagadi, Uganda.  
-All rights reserved © 2024–2025.
+Built by **ASMART.TEC**.
+All rights reserved.

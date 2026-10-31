@@ -1,5 +1,5 @@
 -- ============================================================================
--- Paradigm Institute Christmas Wishes & Interactive Skit Campaign Schema
+-- ASMART.TEC Christmas Wishes & Interactive Skit Campaign Schema
 -- Kagadi, Uganda
 -- ============================================================================
 
@@ -11,9 +11,9 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS public.campaign_config (
     id UUID PRIMARY KEY DEFAULT '00000000-0000-0000-0000-000000000001'::uuid,
-    campaign_name TEXT NOT NULL DEFAULT 'Paradigm Institute Christmas Wishes',
+    campaign_name TEXT NOT NULL DEFAULT 'ASMART.TEC Christmas Wishes',
     campaign_status TEXT NOT NULL DEFAULT 'active' CHECK (campaign_status IN ('active', 'inactive', 'paused')),
-    main_message TEXT NOT NULL DEFAULT 'Merry Christmas & Happy New Year from Paradigm Institute, Kagadi!',
+    main_message TEXT NOT NULL DEFAULT 'Merry Christmas & Happy New Year from ASMART.TEC, Kagadi!',
     skit_version TEXT NOT NULL DEFAULT 'v1',
     start_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     end_at TIMESTAMPTZ NULL,
@@ -30,7 +30,7 @@ INSERT INTO public.campaign_config (
     id, campaign_name, campaign_status, main_message, skit_version, show_public_counter
 ) VALUES (
     '00000000-0000-0000-0000-000000000001'::uuid,
-    'Paradigm Institute Christmas Wishes 2024',
+    'ASMART.TEC Christmas Wishes',
     'active',
     'Spreading the joy and spirit of Christmas across Kagadi and beyond!',
     'v1',
@@ -162,4 +162,3 @@ CREATE POLICY "Public analytics insert"
     ON public.analytics_events
     FOR INSERT
     WITH CHECK (true);
-

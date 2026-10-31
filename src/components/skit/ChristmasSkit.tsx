@@ -6,6 +6,10 @@ import { trackEvent } from '@/lib/analytics';
 import { audioChimes } from '@/components/ui/AudioChimes';
 import ConfettiEffect from '@/components/ui/ConfettiEffect';
 import ChristmasLights from '@/components/christmas/ChristmasLights';
+import ChristmasTree from '@/components/christmas/ChristmasTree';
+import BotanicalDivider from '@/components/christmas/botanical/BotanicalDivider';
+import ChristmasFlower from '@/components/christmas/botanical/ChristmasFlower';
+import GoldenStar from '@/components/christmas/botanical/GoldenStar';
 import { Volume2, VolumeX, ChevronRight, ChevronLeft, Sparkles, Heart, Gift, BookOpen, Star } from 'lucide-react';
 
 interface Scene {
@@ -24,8 +28,8 @@ const SCENES: Scene[] = [
   },
   {
     id: 2,
-    title: 'The Paradigm Community',
-    subtitle: 'At Paradigm Institute, students, tutors, and friends gather to reflect on a year of growth, learning, and resilience.',
+    title: 'The ASMART.TEC Community',
+    subtitle: 'At ASMART.TEC, students, tutors, and friends gather to reflect on a year of growth, learning, and resilience.',
     badge: 'Scene 2: Together in Joy',
   },
   {
@@ -43,7 +47,7 @@ const SCENES: Scene[] = [
   {
     id: 5,
     title: 'The Christmas Blessing & Call',
-    subtitle: 'From everyone at Paradigm Institute: May your holiday be blessed and your New Year full of victory!',
+    subtitle: 'From everyone at ASMART.TEC: May your holiday be blessed and your New Year full of victory!',
     badge: 'Finale: Pass the Light Forward',
   },
 ];
@@ -164,12 +168,17 @@ export default function ChristmasSkit() {
           </p>
         </div>
 
+        {/* Botanical section rule */}
+        <div className="flex shrink-0 justify-center" aria-hidden="true">
+          <BotanicalDivider size={22} ruleWidth={56} />
+        </div>
+
         {/* Scene Graphic / Interactive Area */}
         <div className="my-6">
           {currentScene === 0 && (
-            <div className="relative text-center py-8">
-              <div className="text-7xl mb-4 float inline-block" style={{ filter: 'drop-shadow(0 0 25px #F5D76E)' }}>
-                ⭐
+            <div className="relative text-center py-6">
+              <div className="flex justify-center mb-3">
+                <GoldenStar size={96} bleed={58} className="floral-float" style={{ '--floral-duration': '7.5s' } as React.CSSProperties} />
               </div>
               <p className="text-xs text-white/60 italic max-w-sm mx-auto">
                 &ldquo;A light shines in the east of Lake Albert, across the Kagadi ridges, announcing a season of gratitude.&rdquo;
@@ -178,14 +187,16 @@ export default function ChristmasSkit() {
           )}
 
           {currentScene === 1 && (
-            <div className="text-center py-6">
-              <div className="flex justify-center items-center gap-4 text-4xl mb-4">
-                <span className="p-3 rounded-2xl bg-white/5 border border-white/10 shadow">👨‍🎓</span>
-                <span className="p-3 rounded-2xl bg-[#D4AF37]/20 border border-[#D4AF37]/40 shadow-lg text-5xl">🎄</span>
-                <span className="p-3 rounded-2xl bg-white/5 border border-white/10 shadow">👩‍🏫</span>
+            <div className="text-center py-4">
+              <div className="flex justify-center items-end gap-4 mb-4">
+                <span className="p-3 rounded-2xl bg-white/5 border border-white/10 shadow text-4xl">👨‍🎓</span>
+                <span className="inline-block transform scale-75 origin-bottom">
+                  <ChristmasTree size="sm" />
+                </span>
+                <span className="p-3 rounded-2xl bg-white/5 border border-white/10 shadow text-4xl">👩‍🏫</span>
               </div>
               <p className="text-sm text-[#F5D76E] font-medium max-w-md mx-auto">
-                Paradigm Institute stands as a beacon for ambition, community growth, and digital skills in Kagadi, Uganda.
+                ASMART.TEC celebrates ambition, community growth, and digital skills in Kagadi, Uganda.
               </p>
             </div>
           )}
@@ -254,7 +265,17 @@ export default function ChristmasSkit() {
 
           {currentScene === 4 && (
             <div className="text-center py-4">
-              <div className="text-5xl mb-3">🎉 🌟 🎁</div>
+              <div className="mb-3 flex items-end justify-center gap-3">
+                <span className="floral-float inline-block" style={{ animationDuration: '10.5s', animationDelay: '-3.2s' }}>
+                  <ChristmasFlower kind="holly" size={58} angle={-14} glow={false} detail="low" seed={51} />
+                </span>
+                <span className="floral-float inline-block" style={{ animationDuration: '8.5s', animationDelay: '-1.1s' }}>
+                  <ChristmasFlower kind="poinsettia" size={62} glow sparkles detail="low" seed={53} />
+                </span>
+                <span className="floral-float inline-block" style={{ animationDuration: '11.5s', animationDelay: '-5.4s' }}>
+                  <ChristmasFlower kind="mistletoe" size={56} angle={12} detail="low" seed={55} />
+                </span>
+              </div>
               <p className="text-lg font-serif font-bold text-[#F5D76E] mb-2">
                 Merry Christmas & Prosperous 2025!
               </p>
@@ -319,4 +340,3 @@ export default function ChristmasSkit() {
     </div>
   );
 }
-

@@ -36,6 +36,27 @@ body {
   overflow-x: hidden;
 }
 
+/* ── Now-playing equaliser ───────────────────────────────── */
+.eq-bar {
+  height: 4px;
+  opacity: 0.55;
+}
+
+.eq-bar-live {
+  opacity: 1;
+  animation: eq-bounce 0.9s ease-in-out infinite;
+}
+
+@keyframes eq-bounce {
+  0%,
+  100% {
+    height: 4px;
+  }
+  50% {
+    height: 12px;
+  }
+}
+
 /* ── Reduced motion ──────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -44,6 +65,30 @@ body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  /*
+   * The blanket rule above lands each floral loop on its final keyframe, which
+   * for the sparkles is opacity 0. Hold the botanical layer at rest instead of
+   * erasing it.
+   */
+  .floral-float,
+  .floral-sway,
+  .floral-spin,
+  .floral-bloom,
+  .eq-bar-live,
+  .floral-petal {
+    animation: none !important;
+  }
+
+  .floral-sparkle {
+    animation: none !important;
+    opacity: 0.7 !important;
+    transform: none !important;
+  }
+
+  .floral-petal {
+    display: none;
   }
 }
 
@@ -209,6 +254,38 @@ body {
   animation: float 3.5s ease-in-out infinite;
 }
 
+.christmas-card {
+  background-image:
+    radial-gradient(ellipse at 50% 48%, rgba(26, 107, 58, 0.18), transparent 55%),
+    radial-gradient(ellipse at top, #182947 0%, #101D32 55%, #0A1628 100%);
+}
+
+.christmas-card-frame {
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.42);
+  border-radius: 1rem;
+  pointer-events: none;
+}
+
+.christmas-card-frame::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(245, 215, 110, 0.16);
+  border-radius: 0.7rem;
+}
+
+.christmas-title {
+  text-shadow: 0 0 24px rgba(245, 215, 110, 0.25);
+  animation: title-glow 4s ease-in-out infinite;
+}
+
+@keyframes title-glow {
+  0%, 100% { text-shadow: 0 0 18px rgba(245, 215, 110, 0.18); }
+  50% { text-shadow: 0 0 28px rgba(245, 215, 110, 0.42); }
+}
+
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50%       { transform: translateY(-10px); }
@@ -245,6 +322,83 @@ body {
 @keyframes light-flicker {
   0%, 100% { filter: brightness(1) saturate(1.2); }
   50%       { filter: brightness(1.5) saturate(1.5); }
+}
+
+/* ── Botanical decorations ───────────────────────────────── */
+/*
+ * Motion for the floral layer lives here rather than in Framer Motion for the
+ * looping work: a dozen CSS keyframe loops cost nothing on the main thread,
+ * while Framer Motion is reserved for the coordinated bloom entrances.
+ */
+.floral-float {
+  animation: floral-float var(--floral-duration, 9s) ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes floral-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  32%      { transform: translateY(-7px) rotate(0.7deg); }
+  68%      { transform: translateY(5px) rotate(-0.6deg); }
+}
+
+.floral-sway {
+  transform-origin: 50% 96%;
+  animation: floral-sway var(--floral-duration, 8s) ease-in-out infinite;
+}
+
+@keyframes floral-sway {
+  0%, 100% { transform: rotate(-1.8deg); }
+  50%      { transform: rotate(1.8deg); }
+}
+
+.floral-spin {
+  animation: floral-spin var(--floral-duration, 64s) linear infinite;
+}
+
+@keyframes floral-spin {
+  to { transform: rotate(360deg); }
+}
+
+.floral-bloom {
+  transform-origin: 50% 62%;
+  animation: floral-bloom 1.3s cubic-bezier(0.22, 0.9, 0.28, 1) both;
+}
+
+@keyframes floral-bloom {
+  0%   { opacity: 0; transform: scale(0.68) rotate(-9deg); }
+  55%  { opacity: 1; }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+.floral-sparkle {
+  opacity: 0;
+  animation: floral-sparkle var(--floral-duration, 3s) ease-in-out infinite;
+}
+
+@keyframes floral-sparkle {
+  0%, 100% { opacity: 0; transform: scale(0.35) rotate(0deg); }
+  40%      { opacity: 1; transform: scale(1) rotate(28deg); }
+  70%      { opacity: 0.35; transform: scale(0.7) rotate(46deg); }
+}
+
+.floral-glow {
+  filter: drop-shadow(0 0 14px rgba(245, 215, 110, 0.32));
+}
+
+.floral-petal {
+  top: -8vh;
+  animation-name: petal-drift;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes petal-drift {
+  0%   { opacity: 0; transform: translate3d(0, 0, 0) rotate(0deg); }
+  9%   { opacity: 0.8; }
+  45%  { transform: translate3d(calc(var(--petal-drift) * 0.45), 48vh, 0) rotate(calc(var(--petal-spin) * 0.45)); }
+  88%  { opacity: 0.45; }
+  100% { opacity: 0; transform: translate3d(var(--petal-drift), 112vh, 0) rotate(var(--petal-spin)); }
 }
 
 /* ── Scrollbar ───────────────────────────────────────────── */

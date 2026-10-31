@@ -2,9 +2,30 @@
 // Web Audio API synthesized festive chimes and bells
 // No external MP3 files needed; instant load and reliable across browsers.
 
+/** Title shown wherever the carol is offered for playback. */
+export const DEFAULT_SONG_TITLE = 'We Wish You a Merry Christmas & Happy New Year';
+
 class ChimeAudioService {
   private ctx: AudioContext | null = null;
   private isMuted: boolean = false;
+  private themeTimers: number[] = [];
+  private themeTimer: number | null = null;
+  private themePlaying = false;
+
+  /**
+   * [frequency, offset ms, bell duration s] — the traditional carol in G major,
+   * three "we wish you" phrases and the "and a happy new year" cadence.
+   */
+  private static readonly THEME: ReadonlyArray<readonly [number, number, number]> = [
+    [293.66, 0, 0.8], [392.0, 400, 0.8], [392.0, 800, 0.8], [440.0, 1200, 0.8],
+    [392.0, 1600, 0.8], [369.99, 2000, 0.8], [329.63, 2400, 1.6],
+    [329.63, 3800, 0.8], [440.0, 4200, 0.8], [440.0, 4600, 0.8], [493.88, 5000, 0.8],
+    [440.0, 5400, 0.8], [392.0, 5800, 0.8], [369.99, 6200, 1.6],
+    [293.66, 7600, 0.8], [493.88, 8000, 0.8], [493.88, 8400, 0.8], [523.25, 8800, 0.8],
+    [493.88, 9200, 0.8], [440.0, 9600, 0.8], [392.0, 10000, 1.4],
+    [329.63, 11400, 0.8], [293.66, 11800, 0.8], [293.66, 12200, 0.8], [329.63, 12600, 0.8],
+    [440.0, 13000, 0.8], [369.99, 13400, 0.8], [392.0, 13800, 2.4],
+  ];
 
   private getContext(): AudioContext | null {
     if (typeof window === 'undefined') return null;
@@ -85,11 +106,74 @@ class ChimeAudioService {
     });
   }
 
+  /** True when the browser has already granted this page audio permission. */
+  public isAudioReady(): boolean {
+    const ctx = this.getContext();
+    return !!ctx && ctx.state === 'running';
+  }
+
+  /**
+   * Autoplay is gated behind a user gesture: calling this from the first tap or
+   * keypress unlocks the bells. Resolves true once sound is actually flowing.
+   */
+  public async resumeAudio(): Promise<boolean> {
+    const ctx = this.getContext();
+    if (!ctx) return false;
+    try {
+      await ctx.resume();
+    } catch {
+      // Older engines reject resume() outside a gesture
+    }
+    return ctx.state === 'running';
+  }
+
+  /** Length of one full pass through the carol, in ms. */
+  public getThemeDuration(): number {
+    const last = ChimeAudioService.THEME[ChimeAudioService.THEME.length - 1];
+    return last[1] + last[2] * 1000;
+  }
+
+  /** Schedule one pass; every timer is tracked so stopTheme() can cancel it. */
+  private scheduleThemePass(): void {
+    ChimeAudioService.THEME.forEach(([freq, offset, dur]) => {
+      this.themeTimers.push(window.setTimeout(() => this.playBell(freq, dur, 0.16), offset));
+    });
+  }
+
+  /**
+   * Loop the carol. Browsers block the AudioContext until a gesture, so this is
+   * only ever called from a click handler. Muting silences it without stopping
+   * the loop, so unmuting picks the same phrase back up.
+   */
+  public startTheme(gapMs = 1800): void {
+    if (typeof window === 'undefined' || this.themePlaying) return;
+    this.themePlaying = true;
+    const run = () => {
+      this.themeTimers = [];
+      this.scheduleThemePass();
+      this.themeTimer = window.setTimeout(run, this.getThemeDuration() + gapMs);
+    };
+    run();
+  }
+
+  public stopTheme(): void {
+    this.themePlaying = false;
+    this.themeTimers.forEach((id) => window.clearTimeout(id));
+    this.themeTimers = [];
+    if (this.themeTimer !== null) {
+      window.clearTimeout(this.themeTimer);
+      this.themeTimer = null;
+    }
+  }
+
+  public isThemePlaying(): boolean {
+    return this.themePlaying;
+  }
+
   /**
    * Play a single magical twinkle chime
    */
-  public playTwinkle() {
-    if (this.isMuted) return;
+  public playTwinkle() {    if (this.isMuted) return;
     const notes = [523.25, 659.25, 783.99, 1046.5];
     notes.forEach((freq, idx) => {
       setTimeout(() => {

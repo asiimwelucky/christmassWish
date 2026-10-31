@@ -22,7 +22,7 @@ export async function GET(): Promise<NextResponse> {
       return NextResponse.json({
         show_public_counter: false,
         total_wishes_created: null,
-        campaign_name: config?.campaign_name ?? 'Paradigm Institute Christmas Wishes',
+        campaign_name: config?.campaign_name ?? 'ASMART.TEC Christmas Wishes',
         is_active: isActive,
       });
     }
@@ -36,7 +36,7 @@ export async function GET(): Promise<NextResponse> {
     return NextResponse.json({
       show_public_counter: true,
       total_wishes_created: count ?? 0,
-      campaign_name: config?.campaign_name ?? 'Paradigm Institute Christmas Wishes',
+      campaign_name: config?.campaign_name ?? 'ASMART.TEC Christmas Wishes',
       is_active: isActive,
     });
   } catch (err) {
@@ -44,7 +44,7 @@ export async function GET(): Promise<NextResponse> {
     return NextResponse.json({
       show_public_counter: false,
       total_wishes_created: null,
-      campaign_name: 'Paradigm Institute Christmas Wishes',
+      campaign_name: 'ASMART.TEC Christmas Wishes',
       is_active: true,
     });
   }

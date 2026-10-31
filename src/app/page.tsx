@@ -8,8 +8,11 @@ import ChristmasTree from '@/components/christmas/ChristmasTree';
 import SnowEffect from '@/components/christmas/SnowEffect';
 import StarField from '@/components/christmas/StarField';
 import Footer from '@/components/christmas/Footer';
+import FallingPetals from '@/components/christmas/botanical/FallingPetals';
+import FloatingChristmasFlowers from '@/components/christmas/botanical/FloatingChristmasFlowers';
+import ChristmasFlower from '@/components/christmas/botanical/ChristmasFlower';
 import { trackEvent } from '@/lib/analytics';
-import { Sparkles, Share2, Heart, Award, ShieldCheck } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 interface CampaignData {
   show_public_counter: boolean;
@@ -31,26 +34,28 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#0A1628] text-white flex flex-col justify-between overflow-hidden selection:bg-[#D4AF37] selection:text-black">
+    <div className="relative min-h-screen bg-[#0A1628] text-white flex flex-col justify-between overflow-x-hidden select-none">
       {/* Dynamic Backgrounds */}
       <StarField />
       <SnowEffect />
+      <FloatingChristmasFlowers />
+      <FallingPetals count={6} />
 
       {/* Top Christmas Lights */}
-      <div className="relative z-10">
+      <div className="relative z-10 shrink-0">
         <ChristmasLights count={14} />
       </div>
 
-      {/* Main Content */}
-      <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-8 max-w-4xl mx-auto w-full text-center">
+      {/* Main Hero - Centered and Single-Screen Fit */}
+      <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-2 max-w-3xl mx-auto w-full text-center my-auto">
         {/* Brand Header */}
-        <div className="mb-6">
-          <BrandHeader variant="full" />
+        <div className="mb-2">
+          <BrandHeader variant="compact" />
         </div>
 
         {/* Live Counter Badge */}
         {campaign?.show_public_counter && (
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/35 text-[#F5D76E] text-xs font-semibold tracking-wide mb-6 shadow-md pulse-glow">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/35 text-[#F5D76E] text-xs font-semibold tracking-wide mb-3 shadow-md pulse-glow">
             <span className="w-2 h-2 rounded-full bg-[#27AE60] animate-ping" />
             <span>
               {campaign.total_wishes_created !== null
@@ -61,67 +66,44 @@ export default function HomePage() {
         )}
 
         {/* Hero Title */}
-        <h1 className="text-4xl sm:text-6xl font-serif font-extrabold tracking-tight mb-4 text-white">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-extrabold tracking-tight mb-2 text-white leading-tight">
           Merry Christmas from{' '}
-          <span className="gold-shimmer block sm:inline">Paradigm Institute</span>
+          <span className="gold-shimmer block sm:inline">ASMART.TEC</span>
         </h1>
 
-        <p className="text-base sm:text-xl text-[#FFF8F0]/85 max-w-2xl mx-auto mb-8 font-light leading-relaxed">
-          Celebrate hope, connection, and learning this festive season. Create a customized greeting for someone you cherish and spread the Christmas joy!
+        <p className="text-sm sm:text-base text-[#FFF8F0]/85 max-w-lg mx-auto mb-3 font-light leading-relaxed">
+          Celebrate hope, connection, and learning this festive season. Create a customized greeting for someone you cherish and share the Christmas cheer!
         </p>
 
-        {/* Interactive Christmas Tree Display */}
-        <div className="mb-8">
-          <ChristmasTree size="md" />
+        {/* Christmas Tree framed by blooms */}
+        <div className="mb-3 flex items-end justify-center gap-2 sm:gap-5">
+          <span className="floral-float hidden shrink-0 lg:inline-block" style={{ animationDuration: '11s', animationDelay: '-2.4s' }}>
+            <ChristmasFlower kind="holly" size={72} angle={-12} glow={false} detail="low" seed={23} />
+          </span>
+
+          <div className="transform scale-90 sm:scale-100 origin-center">
+            <ChristmasTree size="sm" />
+          </div>
+
+          <span className="floral-float hidden shrink-0 lg:inline-block" style={{ animationDuration: '9.5s', animationDelay: '-0.8s' }}>
+            <ChristmasFlower kind="white-poinsettia" size={66} detail="low" seed={29} />
+          </span>
         </div>
 
         {/* Call to Action */}
-        <div className="flex justify-center items-center w-full max-w-md mb-12">
+        <div className="w-full max-w-xs mx-auto">
           <Link
             href="/create"
-            className="btn-primary w-full sm:w-auto flex items-center justify-center gap-2 py-4 px-10 text-base shadow-xl"
+            className="btn-primary w-full flex items-center justify-center gap-2 py-3.5 px-6 text-sm sm:text-base shadow-2xl tracking-wide uppercase font-bold"
           >
             <Sparkles className="w-5 h-5" />
-            <span>Create Your Christmas Wish</span>
+            <span>Create Christmas Wish</span>
           </Link>
-        </div>
-
-        {/* Value Highlights */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-3xl text-left">
-          <div className="festive-card p-5 border border-white/10 hover:border-[#D4AF37]/40 transition-colors">
-            <div className="w-10 h-10 rounded-xl bg-[#C0392B]/20 text-[#E74C3C] flex items-center justify-center mb-3">
-              <Heart className="w-5 h-5" />
-            </div>
-            <h3 className="font-semibold text-sm text-white mb-1">Send to Anyone</h3>
-            <p className="text-xs text-white/60 leading-relaxed">
-              Personalized for friends, family, students, teachers, or colleagues.
-            </p>
-          </div>
-
-          <div className="festive-card p-5 border border-white/10 hover:border-[#D4AF37]/40 transition-colors">
-            <div className="w-10 h-10 rounded-xl bg-[#D4AF37]/20 text-[#F5D76E] flex items-center justify-center mb-3">
-              <Share2 className="w-5 h-5" />
-            </div>
-            <h3 className="font-semibold text-sm text-white mb-1">Instant WhatsApp Share</h3>
-            <p className="text-xs text-white/60 leading-relaxed">
-              One-click WhatsApp sharing, downloadable PNG cards, or direct links.
-            </p>
-          </div>
-
-          <div className="festive-card p-5 border border-white/10 hover:border-[#D4AF37]/40 transition-colors">
-            <div className="w-10 h-10 rounded-xl bg-[#27AE60]/20 text-[#27AE60] flex items-center justify-center mb-3">
-              <ShieldCheck className="w-5 h-5" />
-            </div>
-            <h3 className="font-semibold text-sm text-white mb-1">100% Free & Private</h3>
-            <p className="text-xs text-white/60 leading-relaxed">
-              No registration or phone numbers required. Instant, secure, and ad-free.
-            </p>
-          </div>
         </div>
       </main>
 
       {/* Footer */}
-      <div className="relative z-10">
+      <div className="relative z-10 shrink-0">
         <Footer />
       </div>
     </div>
