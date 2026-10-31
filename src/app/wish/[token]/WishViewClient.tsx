@@ -37,9 +37,7 @@ export default function WishViewClient({ wish }: WishViewClientProps) {
       <SnowEffect />
       <ConfettiEffect active={showConfetti} onComplete={() => setShowConfetti(false)} />
 
-      <div className="relative z-20 flex shrink-0 justify-center px-3 pt-3">
-        <NowPlaying />
-      </div>
+      <NowPlaying />
 
       <main className="relative z-10 flex min-h-0 flex-1 items-center justify-center px-3 py-2">
         {/*
@@ -107,7 +105,7 @@ export default function WishViewClient({ wish }: WishViewClientProps) {
             <p className="text-[11px] uppercase tracking-[0.25em] text-[#F5D76E]">
               A Christmas wish for you
             </p>
-            <h1 className="christmas-title mt-3 font-serif text-[clamp(1.9rem,7svh,2.9rem)] font-bold leading-tight text-white">
+            <h1 className="christmas-title font-script mt-3 text-[clamp(2.6rem,10svh,4.2rem)] font-bold leading-tight text-white">
               Merry Christmas!
             </h1>
             <div className="my-4 flex justify-center" aria-hidden="true">
@@ -118,7 +116,7 @@ export default function WishViewClient({ wish }: WishViewClientProps) {
                 'Wishing you peace, joy, and love this Christmas and throughout the New Year.'}
             </p>
             <p className="mt-6 text-[13px] text-[rgba(255,255,255,0.60)]">With love,</p>
-            <p className="mt-1 text-[clamp(1.1rem,3.4svh,1.6rem)] font-semibold break-words text-[#F5D76E]">
+            <p className="font-script mt-1 text-[clamp(1.7rem,5svh,2.4rem)] break-words text-[#F5D76E]">
               {wish.display_name}
             </p>
             <p className="mx-auto mt-3 max-w-[15rem] text-[10px] tracking-wide text-[rgba(255,255,255,0.45)]">

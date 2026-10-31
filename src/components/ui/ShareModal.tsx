@@ -109,7 +109,7 @@ export default function ShareModal({
           <div className="mb-3 flex justify-center">
             <AsmartLogo size={52} />
           </div>
-          <h3 id="share-title" className="text-2xl font-serif font-bold text-white">
+          <h3 id="share-title" className="font-display text-2xl font-bold text-white">
             Share Your Christmas Wish!
           </h3>
           <p className="text-xs text-white/70 mt-1">

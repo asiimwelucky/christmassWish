@@ -91,7 +91,7 @@ export const GreetingCard = forwardRef<HTMLDivElement, GreetingCardProps>(
 
           {/* Heading */}
           <h2
-            className="text-3xl sm:text-4xl font-serif font-bold text-white mb-2 tracking-tight"
+            className="font-script text-5xl sm:text-6xl font-bold text-white mb-2 tracking-tight"
             style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
           >
             Merry Christmas!

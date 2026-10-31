@@ -135,7 +135,7 @@ function CreateWishForm() {
           >
             <ChristmasFlower kind="evergreen" size={78} detail="low" glow={false} snow={false} flipX seed={43} />
           </span>
-          <h1 className="text-xl sm:text-2xl font-serif font-bold text-white">
+          <h1 className="font-display text-xl sm:text-2xl font-bold text-white">
             Create a <span className="gold-shimmer">Christmas Wish</span>
           </h1>
           <p className="text-[11px] text-white/70 max-w-md mx-auto hidden sm:block">

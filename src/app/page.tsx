@@ -67,7 +67,7 @@ export default function HomePage() {
         )}
 
         {/* Hero Title */}
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-extrabold tracking-tight mb-2 text-white leading-tight">
+        <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-2 text-white leading-tight">
           Merry Christmas from{' '}
           <span className="gold-shimmer block sm:inline">ASMART.TEC</span>
         </h1>
