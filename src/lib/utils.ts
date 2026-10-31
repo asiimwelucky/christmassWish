@@ -1,5 +1,7 @@
 // src/lib/utils.ts — Shared utilities
 
+export const SHARE_PREVIEW_VERSION = '2';
+
 /**
  * Build the WhatsApp share URL for a personalized wish.
  */
@@ -8,7 +10,7 @@ export function buildWhatsAppShareUrl(token: string): string {
     typeof window !== 'undefined'
       ? window.location.origin
       : process.env.NEXT_PUBLIC_SITE_URL || '';
-  const wishUrl = `${siteUrl}/wish/${token}`;
+  const wishUrl = `${siteUrl}/wish/${token}?preview=${SHARE_PREVIEW_VERSION}`;
   return `https://wa.me/?text=${encodeURIComponent(wishUrl)}`;
 }
 
@@ -20,7 +22,7 @@ export function buildWishUrl(token: string): string {
     typeof window !== 'undefined'
       ? window.location.origin
       : process.env.NEXT_PUBLIC_SITE_URL || '';
-  return `${siteUrl}/wish/${token}`;
+  return `${siteUrl}/wish/${token}?preview=${SHARE_PREVIEW_VERSION}`;
 }
 
 /**

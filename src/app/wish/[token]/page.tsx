@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { createServiceClient } from '@/lib/supabase/server';
-import type { Wish } from '@/types';
+import { getWishByToken } from '@/lib/wishes';
+import { SHARE_PREVIEW_VERSION } from '@/lib/utils';
 import EvergreenSprig from '@/components/christmas/botanical/EvergreenSprig';
 import PoinsettiaDecoration from '@/components/christmas/botanical/PoinsettiaDecoration';
 import BotanicalLoadingScreen from '@/components/christmas/botanical/BotanicalLoadingScreen';
@@ -12,28 +12,9 @@ interface PageProps {
   params: Promise<{ token: string }>;
 }
 
-async function getWish(token: string): Promise<Wish | null> {
-  try {
-    const supabase = createServiceClient();
-    const { data, error } = await supabase
-      .from('wishes')
-      .select('id, public_token, display_name, recipient_type, personal_message, template_version, parent_token, created_at, expires_at')
-      .eq('public_token', token)
-      .single();
-
-    if (error || !data) {
-      return null;
-    }
-    return data as Wish;
-  } catch (err) {
-    console.error('Failed to load wish server-side:', err);
-    return null;
-  }
-}
-
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { token } = await params;
-  const wish = await getWish(token);
+  const wish = await getWishByToken(token);
 
   const siteUrl =
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
@@ -55,36 +36,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       title,
       description,
-      url: `${siteUrl}/wish/${token}`,
+      url: `${siteUrl}/wish/${token}?preview=${SHARE_PREVIEW_VERSION}`,
       siteName: 'Christmas Wishes by ASMART TEC',
-      images: [
-        {
-          url: '/christmas-hero-bg.jpg',
-          width: 1376,
-          height: 768,
-          alt: `Christmas wish for ${name}`,
-        },
-      ],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [
-        {
-          url: '/christmas-hero-bg.jpg',
-          width: 1376,
-          height: 768,
-          alt: `Christmas wish for ${name}`,
-        },
-      ],
+      images: [`${siteUrl}/wish/${token}/opengraph-image`],
     },
   };
 }
 
 async function WishPageContent({ params }: PageProps) {
   const { token } = await params;
-  const wish = await getWish(token);
+  const wish = await getWishByToken(token);
 
   if (!wish) {
     return (
